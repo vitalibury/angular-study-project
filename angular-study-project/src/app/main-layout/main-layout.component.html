@@ -1,0 +1,25 @@
+<p>
+  <mat-toolbar color="primary">
+   <mat-toolbar-row>
+    <!-- <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+      <mat-icon>menu</mat-icon>
+    </button> -->
+    <span>Angular Study Project</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+      <mat-icon>favorite</mat-icon>
+    </button>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+      <mat-icon>share</mat-icon>
+    </button>
+  </mat-toolbar-row>
+
+  <mat-toolbar-row>   
+    <button mat-stroked-button routerLink="/">Список</button>
+    <button mat-stroked-button routerLink="/cards">Карточки</button>
+    <button mat-stroked-button routerLink="/about">Инфо</button>
+  </mat-toolbar-row>
+  </mat-toolbar>
+</p>
+
+<router-outlet></router-outlet>
