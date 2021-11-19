@@ -10,6 +10,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -27,7 +29,9 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatProgressSpinnerModule,
     MatButtonModule,
     MatCardModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    FormsModule,
+    MatInputModule
   ]
 })
 export class MaterialModule { }
