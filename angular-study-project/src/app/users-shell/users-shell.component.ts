@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChildren } from '@angular/core';
+import { Component, ViewChildren } from '@angular/core';
 import { UserItemComponent } from '../shared/user-item/user-item.component';
 import { IUser, UsersService } from '../users.service';
 
@@ -7,7 +7,7 @@ import { IUser, UsersService } from '../users.service';
   templateUrl: './users-shell.component.html',
   styleUrls: ['./users-shell.component.scss']
 })
-export class UsersShellComponent implements OnInit {
+export class UsersShellComponent {
 
   users: IUser[];
   isShowDeactivated: Boolean = true;
@@ -19,23 +19,20 @@ export class UsersShellComponent implements OnInit {
     this.filterUsers();
   }
 
-  ngOnInit(): void {
-  }
-
-  filterUsers() {
+  filterUsers(): void {
     this.isShowDeactivated ? this.users = this.usersService.users : this.users = this.usersService.users.filter(user => user.activated);
   }
 
-  showHideDeactivated() {
+  showHideDeactivated():void {
     this.isShowDeactivated = !this.isShowDeactivated;
   }
 
-  changeMode() {
+  changeMode():void {
     this.showHideDeactivated();
     this.filterUsers();
   }
 
-  deactivateUser(user: IUser) {
+  deactivateUser(user: IUser):void {
     this.users.forEach(item => {
       if (item.id === user.id) {
         item.age >= 18 ? item.activated = false : undefined;
@@ -44,11 +41,11 @@ export class UsersShellComponent implements OnInit {
     this.filterUsers();
   }
 
-  deactivateAllowedUsers() {
+  deactivateAllowedUsers():void {
     this.userCards.forEach(card => card.deactivate(card.user));
   }
 
-  userLog(user: any) {
+  userLog(user: any):void {
     console.log(user);
   }
 

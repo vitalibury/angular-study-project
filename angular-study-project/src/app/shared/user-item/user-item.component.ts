@@ -18,11 +18,11 @@ export class UserItemComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  deactivate(user: IUser) {
+  deactivate(user: IUser): void {
     this.deactivateUser.emit(user);
   }
 
-  log(user: IUser) {
+  log(user: IUser): void {
     this.userLog.emit(user);
   }
 

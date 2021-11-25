@@ -2,8 +2,8 @@
   <h3>First Component</h3>
 </mat-toolbar>
 
-<button mat-raised-button class='show-hide-btn' color="primary" (click)='changeMode()'>{{isShowDeactivated ? 'Показать активных' : 'Показать всех'}}</button>
-<button mat-raised-button class='show-hide-btn' color="primary" (click)='deactivateAllowedUsers()'>Деактивировать взрослых</button>
+<button mat-raised-button class="show-hide-btn" color="primary" (click)="changeMode()">{{isShowDeactivated ? 'Показать активных' : 'Показать всех'}}</button>
+<button mat-raised-button class="show-hide-btn" color="primary" (click)="deactivateAllowedUsers()">Деактивировать взрослых</button>
 
 <div class="users">  
 <app-user-item *ngFor="let user of users" [user]="user" (userLog)="userLog($event)" (deactivateUser)="deactivateUser($event)"></app-user-item>
