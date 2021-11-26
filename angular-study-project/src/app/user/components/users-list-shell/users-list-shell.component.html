@@ -1,0 +1,3 @@
+<div class="users">  
+<app-user-item *ngFor="let user of users" [user]="user" (userLog)="userLog($event)" (deactivateUser)="filterUsers()"></app-user-item>
+</div>

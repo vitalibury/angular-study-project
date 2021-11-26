@@ -1,0 +1,22 @@
+.user-card {
+  min-width: 250px;
+  max-width: 400px;
+  margin: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  background-color: rgb(79, 0, 168);
+}
+
+
+.activated {
+  align-self: flex-end;
+}
+
+.user-vehicle-image {
+  height: 15rem;
+  width: 20rem;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
