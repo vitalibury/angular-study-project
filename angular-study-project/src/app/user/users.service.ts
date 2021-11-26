@@ -1,13 +1,5 @@
 import { Injectable } from '@angular/core';
-
-export interface IUser {
-  id: Number,
-  name: String,
-  age: Number,
-  activated: Boolean,
-  vehicle: String,
-  image: String
-}
+import { IUser } from '.';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +8,11 @@ export class UsersService {
 
   constructor() { }
 
-  users: IUser[] = [
+  getUsers(): IUser[] {
+    return this.users;
+  }
+
+  private users: IUser[] = [
     { id:0, name: 'Joe', age: 40, activated: false, vehicle: 'Toyota', image: 'https://cdn.carbuzz.com/gallery-images/840x560/511000/200/511268.jpg' },
     {  id:1, name: 'Justin', age: 20, activated: true, vehicle: 'Honda', image: 'https://autowise.com/wp-content/uploads/2018/12/honda-accord-1.jpg' },
     {  id:2, name: 'Robin', age: 35, activated: true, vehicle: 'Nissan', image: 'https://autowise.com/wp-content/uploads/2019/01/nissan-altima-1.jpg' },

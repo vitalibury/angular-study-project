@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { MaterialModule } from '../material/material.module';
+import { MaterialModule } from '../material';
 
-import { UserItemComponent } from './user-item/user-item.component';
-import { VehicleComponent } from './vehicle/vehicle.component';
+import { UserItemComponent, VehicleComponent } from '.';
 
 
 
@@ -18,7 +17,8 @@ import { VehicleComponent } from './vehicle/vehicle.component';
     MaterialModule
   ],
   exports: [
-    UserItemComponent
+    UserItemComponent,
+    MaterialModule
   ]
 })
 export class SharedModule { }

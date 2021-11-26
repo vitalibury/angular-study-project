@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IUser } from 'src/app/users.service';
+import { IUser } from 'src/app/user';
 
 @Component({
   selector: 'app-user-item',
@@ -19,6 +19,9 @@ export class UserItemComponent implements OnInit {
   }
 
   deactivate(user: IUser): void {
+    if (user.age >= 18) {
+      user.activated = false;
+    }
     this.deactivateUser.emit(user);
   }
 

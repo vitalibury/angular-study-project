@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { UsersModule } from './users-shell/users.module';
+import { UsersModule } from './user/users.module';
 
 
 @NgModule({
