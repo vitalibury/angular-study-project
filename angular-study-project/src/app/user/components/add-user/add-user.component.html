@@ -1,0 +1,54 @@
+<mat-card-title class="add-user-title">Добавление нового пользователя</mat-card-title>
+<mat-card class="add-user-card">
+  <div class="add-user-form" [formGroup]="form"> 
+    
+    <p class="add-user-form-section">
+      <mat-form-field appearance="outline" color="primary">
+        <mat-label>First Name:</mat-label>
+        <input matInput type="text" placeholder="Andrew" formControlName="firstName">
+      </mat-form-field>
+    </p>
+    
+    <p class="add-user-form-section">
+      <mat-form-field appearance="outline" color="primary">
+        <mat-label>Last Name:</mat-label>
+        <input matInput type="text" placeholder="Brown" formControlName="lastName">
+      </mat-form-field>
+    </p>
+    
+    <p class="add-user-form-section">
+      <mat-form-field appearance="outline" color="primary">
+        <mat-label>Age:</mat-label>
+        <input matInput type="number" formControlName="age">
+      </mat-form-field>
+    </p>
+    
+    <p class="add-user-form-section">
+      <mat-form-field appearance="outline" color="primary">
+        <mat-label>Company:</mat-label>
+        <input matInput type="text" formControlName="company">
+      </mat-form-field>
+    </p>
+    
+    <p class="add-user-form-section">
+      <mat-form-field appearance="outline" color="primary">
+        <mat-label>Departament:</mat-label>
+        <input matInput type="text" formControlName="departament">
+      </mat-form-field>
+    </p>
+    
+    <!-- <p class="add-user-form-section file-section">
+      <label class="manual-label" for="user-form-file">Photo: </label>
+      <input class="file-input" id="user-form-file" type="file" formControlName="photo">
+    </p> -->
+    
+    <p class="add-user-form-section gender-section">
+      <label class="manual-label" id="user-form-gender">Gender: </label>
+      <mat-radio-group aria-label="user-form-gender" formControlName="gender">
+        <mat-radio-button class="add-user-form-radio" value="Male">Male</mat-radio-button>
+        <mat-radio-button class="add-user-form-radio" value="Female">Female</mat-radio-button>
+      </mat-radio-group>
+    </p>
+    
+  </div>
+</mat-card>

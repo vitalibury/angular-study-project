@@ -1,0 +1,24 @@
+<mat-toolbar class="first-component-header" color="primary">
+  <mat-toolbar-row>
+    <h3>Angular Study Project</h3>
+  </mat-toolbar-row>
+  <mat-toolbar-row>
+    <mat-nav-list class="nav-links">
+      <a
+        class="nav-link"
+        mat-list-item
+        routerLink=""
+        [routerLinkActiveOptions]="{ exact: true }"
+        routerLinkActive="active">
+        Users
+      </a>
+      <a
+        class="nav-link"
+        mat-list-item
+        routerLink="add-user"
+        routerLinkActive="active">
+        Add user
+      </a>
+    </mat-nav-list>
+  </mat-toolbar-row>
+</mat-toolbar>

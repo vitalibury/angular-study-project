@@ -1,0 +1,50 @@
+.add-user-title {
+  width: 100%;
+  text-align: center;
+  margin: 0 auto 0.5rem;
+}
+.add-user-card {
+  max-width: 30rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+
+  .add-user-form {
+    width: 100%;
+    background-color: azure;
+    
+      .add-user-form-section {
+        text-align: center;
+
+        .manual-label {
+          color: #606666;
+        }
+      }
+
+      .file-section,
+      .gender-section {
+        padding-bottom: 1rem;
+
+        .add-user-form-radio {
+          margin-right: 0.5rem;
+        }
+      }
+      
+      // .file-input-field {
+      //   // padding-top: 2.5rem;
+      //   padding-right: 3rem;
+      // }
+      
+      
+      
+      // .file-input {
+      //   // display: none;
+      //   padding-top: 1.5rem;
+      //   padding-right: 3rem;
+      // }
+      
+  }
+}

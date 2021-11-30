@@ -1,0 +1,21 @@
+.first-component-header {
+ margin-bottom: 0.5rem;
+
+  .nav-links {
+    display: flex;
+
+    .active {
+      opacity: 0.8;
+    }
+  }
+
+  .nav-link {
+    margin-right: 0.5rem;
+    background-color: rgb(168, 37, 70);
+  }
+
+  .nav-link:hover {
+    opacity: 0.9;
+    transition: 500ms;
+  }
+}

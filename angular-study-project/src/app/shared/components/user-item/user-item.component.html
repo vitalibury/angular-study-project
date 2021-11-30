@@ -1,13 +1,13 @@
 <mat-card class="user-card">
   <mat-card-subtitle class="activated" [ngStyle]="{'color': user.activated ? 'lightgreen' : 'white'}">{{user.activated ? 'Active' : 'Non-Active'}}</mat-card-subtitle>
-  <mat-card-title-group >
+  <mat-card-title-group>
     <mat-card-title>{{user.name}}</mat-card-title>
-    <mat-card-subtitle>{{user.age}} years</mat-card-subtitle>
+    <mat-card-subtitle class="card-subtitle">{{user.age}} years</mat-card-subtitle>
   </mat-card-title-group>
   <mat-card-content>
     <app-vehicle>
       <h3 user-vehicle-title>Vehicle: {{user.vehicle}}</h3>
-      <div class="user-vehicle-image" [ngStyle]="{'background-image': 'url('+user.image+')'}"></div>
+      <div class="user-vehicle-image" [ngStyle]="{'background-image': 'url(&quot;'+user.image+'&quot;)'}"></div>
     </app-vehicle>
   </mat-card-content>
   <mat-card-actions>

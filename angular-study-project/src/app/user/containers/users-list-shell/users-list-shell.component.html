@@ -1,0 +1,11 @@
+<app-users [isShowDeactivated]="isShowDeactivated" (changeMode)="showHideDeactivated()" (deactivateAllowedUsers)="deactivateAllowedUsers()"></app-users>
+
+<div class="users" *ngIf="users$; else loader">
+  <ng-container  *ngFor="let user of users$ | async">
+    <app-user-item [hidden]="!user.activated && !isShowDeactivated" [user]="user" (userLog)="userLog($event)" (deactivateUser)="deactivateParticularUser($event)"></app-user-item>
+  </ng-container>
+</div>
+
+<ng-template #loader>
+  <mat-spinner></mat-spinner>
+</ng-template>

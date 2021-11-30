@@ -1,8 +1,0 @@
-<mat-toolbar class="first-component-header" color="accent">
-  <h3>First Component</h3>
-</mat-toolbar>
-
-<button mat-raised-button class="show-hide-btn" color="primary" (click)="usersList.changeMode()">{{usersList.isShowDeactivated ? 'Показать активных' : 'Показать всех'}}</button>
-<button mat-raised-button class="show-hide-btn" color="primary" (click)="usersList.deactivateAllowedUsers()">Деактивировать взрослых</button>
-
-<app-users-list-shell #usersList></app-users-list-shell>
