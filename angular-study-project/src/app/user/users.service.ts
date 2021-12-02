@@ -1,5 +1,5 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, map, Observable, of, Subject } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
 import { IUser } from '.';
 
 @Injectable({
@@ -8,7 +8,7 @@ import { IUser } from '.';
 export class UsersService {
   
     private users: IUser[] = [
-      { id:0, name: 'Joe', age: 40, email: 'Joe-40@gmail.com', activated: false, vehicle: 'Toyota', image: 'https://cdn.carbuzz.com/gallery-images/840x560/511000/200/511268.jpg' },
+      {  id:0, name: 'Joe', age: 40, email: 'Joe-40@gmail.com', activated: false, vehicle: 'Toyota', image: 'https://cdn.carbuzz.com/gallery-images/840x560/511000/200/511268.jpg' },
       {  id:1, name: 'Justin', age: 20, email: 'Justin-20@gmail.com', activated: true, vehicle: 'Honda', image: 'https://autowise.com/wp-content/uploads/2018/12/honda-accord-1.jpg' },
       {  id:2, name: 'Robin', age: 35, email: 'Robin-35@gmail.com', activated: true, vehicle: 'Nissan', image: 'https://autowise.com/wp-content/uploads/2019/01/nissan-altima-1.jpg' },
       {  id:3, name: 'Mike', age: 15, email: 'Mike-15@gmail.com', activated: true, vehicle: 'Trek', image: 'https://ep1.pinkbike.org/p4pb19249314/p4pb19249314.jpg' },
@@ -23,7 +23,7 @@ export class UsersService {
 
   // private readonly usersSubject = new BehaviorSubject<IUser[]>(this.users);
   // readonly users$: Observable<IUser[]> = this.usersSubject.asObservable();
-  users$: Observable<IUser[]> = of(this.users);
+  readonly users$: Observable<IUser[]> = of(this.users);
 
   constructor() { }
 
@@ -38,6 +38,10 @@ export class UsersService {
   deactivateParticular(user: IUser) {
     const userIndex = this.users.findIndex(u => u.id === user.id);
     this.users.splice(userIndex, 1, user);
+  }
+
+  isEmailExist(email: String) {
+    return of(this.users.findIndex(user => user.email === email) !== -1 ? { emailExist: true } : null)
   }
 
 }

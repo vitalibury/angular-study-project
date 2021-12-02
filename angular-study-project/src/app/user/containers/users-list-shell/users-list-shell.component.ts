@@ -36,13 +36,13 @@ export class UsersListShellComponent implements OnInit, OnDestroy {
     // this.destroy$.complete();
   }
 
-  filterUsers(): void {
-    this.isShowDeactivated ?
-    this.users$ = this.usersService.users$ :
-    this.users$ = this.usersService.users$.pipe(map(users => users.filter(user => user.activated)));
-    // this.users = this.usersService.getUsers() :
-    // this.users = this.usersService.getUsers().filter(user => user.activated);
-  }
+  // filterUsers(): void {
+  //   this.isShowDeactivated ?
+  //   this.users$ = this.usersService.users$ :
+  //   this.users$ = this.usersService.users$.pipe(map(users => users.filter(user => user.activated)));
+  //   // this.users = this.usersService.getUsers() :
+  //   // this.users = this.usersService.getUsers().filter(user => user.activated);
+  // }
 
   showHideDeactivated():void {
     this.isShowDeactivated = !this.isShowDeactivated;

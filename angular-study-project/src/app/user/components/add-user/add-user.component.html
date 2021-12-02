@@ -1,11 +1,12 @@
-<mat-card-title class="add-user-title">Добавление нового пользователя</mat-card-title>
 <mat-card class="add-user-card">
-  <div class="add-user-form" [formGroup]="form"> 
+  <mat-card-title class="add-user-title"><ng-content></ng-content></mat-card-title>
+  <form class="add-user-form" [formGroup]="form"> 
     
     <p class="add-user-form-section">
       <mat-form-field appearance="outline" color="primary">
         <mat-label>First Name:</mat-label>
         <input matInput type="text" placeholder="Andrew" formControlName="firstName">
+        <mat-error *ngIf="checkFormValid('firstName')">Type your first name please</mat-error>
       </mat-form-field>
     </p>
     
@@ -13,6 +14,7 @@
       <mat-form-field appearance="outline" color="primary">
         <mat-label>Last Name:</mat-label>
         <input matInput type="text" placeholder="Brown" formControlName="lastName">
+        <mat-error *ngIf="checkFormValid('lastName')">Type your last name please</mat-error>
       </mat-form-field>
     </p>
     
@@ -20,6 +22,24 @@
       <mat-form-field appearance="outline" color="primary">
         <mat-label>Age:</mat-label>
         <input matInput type="number" formControlName="age">
+        <mat-error *ngIf="checkFormValid('age')">Age should be between 15 and 100</mat-error>
+      </mat-form-field>
+    </p>
+    
+    <p class="add-user-form-section">
+      <mat-form-field appearance="outline" color="primary">
+        <mat-label>Email:</mat-label>
+        <input matInput type="email" formControlName="email">        
+        <mat-error *ngIf="form.get('email').hasError('required'); else secondError">Type email please</mat-error>
+        <ng-template #secondError>
+          <mat-error *ngIf="form.get('email').hasError('email'); else thirdError">Type correct email format</mat-error>
+        </ng-template>
+        <ng-template #thirdError>
+          <mat-error *ngIf="form.get('email').hasError('pattern'); else fourthError">Email should have &quot;@gmail.com&quot; domain</mat-error>
+        </ng-template>
+        <ng-template #fourthError>
+          <mat-error *ngIf="form.get('email').hasError('emailExist')">This email is already registered</mat-error>
+        </ng-template>
       </mat-form-field>
     </p>
     
@@ -34,6 +54,13 @@
       <mat-form-field appearance="outline" color="primary">
         <mat-label>Departament:</mat-label>
         <input matInput type="text" formControlName="departament">
+        <mat-error 
+        *ngIf="checkFormValid('departament')"
+        >Should be {{
+        form.get("departament").errors['minlength'].requiredLength  
+        }} symbols at least. Now {{
+          form.get("departament").errors['minlength'].actualLength
+        }}</mat-error>
       </mat-form-field>
     </p>
     
@@ -43,12 +70,14 @@
     </p> -->
     
     <p class="add-user-form-section gender-section">
-      <label class="manual-label" id="user-form-gender">Gender: </label>
-      <mat-radio-group aria-label="user-form-gender" formControlName="gender">
-        <mat-radio-button class="add-user-form-radio" value="Male">Male</mat-radio-button>
-        <mat-radio-button class="add-user-form-radio" value="Female">Female</mat-radio-button>
-      </mat-radio-group>
+        <!-- <label class="manual-label" id="user-form-gender">Gender: </label> -->
+        <mat-radio-group class="form-radio-group" aria-label="user-form-gender" formControlName="gender">
+          <mat-label class="manual-label" id="user-form-gender">Gender: </mat-label>
+          <mat-radio-button class="add-user-form-radio" value="Male">Male</mat-radio-button>
+          <mat-radio-button class="add-user-form-radio" value="Female">Female</mat-radio-button>
+        </mat-radio-group>
+        <small *ngIf="checkFormValid('gender')" [ngStyle]="{color: '#f44336', fontSize: '10.5px'}">Check gender please</small>
     </p>
     
-  </div>
+  </form>
 </mat-card>

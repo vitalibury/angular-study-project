@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IUser } from 'src/app/user';
+import { IUser, UsersService } from 'src/app/user';
 
 @Component({
   selector: 'app-user-item',
@@ -13,7 +13,7 @@ export class UserItemComponent implements OnInit {
   @Output() userLog = new EventEmitter<IUser>();
   @Output() deactivateUser = new EventEmitter<IUser>();
 
-  constructor() { }
+  constructor(private usersService: UsersService) { }
 
   ngOnInit(): void {
   }

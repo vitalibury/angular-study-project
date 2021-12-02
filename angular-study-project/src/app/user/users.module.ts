@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared';
 
 import {
-  AddUserContainerComponent,
+  AddUserComponent,
   AddUserShellComponent,
   UsersComponent,
   UsersListShellComponent
@@ -12,13 +12,11 @@ import {
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
-
-
 @NgModule({
   declarations: [
     UsersListShellComponent,
     UsersComponent,
-    AddUserContainerComponent,
+    AddUserComponent,
     AddUserShellComponent
   ],
   imports: [

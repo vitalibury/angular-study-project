@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@rxweb/types": "^1.0.8"
+  }
+}
