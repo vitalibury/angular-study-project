@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormArray, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { delay, map, Observable } from 'rxjs';
 import { UsersService } from '../..';
 
@@ -44,6 +44,10 @@ export class AddUserComponent implements OnInit {
           existence => existence ? {emailExist: true} : null
         ), delay(1000));
       }
+  }
+
+  addControl(addressesArrayForm: FormArray) {
+    this.form.addControl('addresses', addressesArrayForm);
   }
 
 }

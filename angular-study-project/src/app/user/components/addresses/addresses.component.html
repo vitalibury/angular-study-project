@@ -1,0 +1,27 @@
+<ng-container>
+
+  <div formArrayName="addressesArrayForm">
+    <!-- <div *ngFor="let address of addressesArrayForm.controls" [formGroup]="address"> -->
+      <mat-form-field appearance="outline" color="primary">
+        <mat-label>Address</mat-label>
+        <textarea matInput placeholder="5 Avenue" formControlName="address"></textarea>
+        <!-- <mat-error><app-form-error [control]="form.get('address')"></app-form-error></mat-error> -->
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline" color="primary">
+        <mat-label>City</mat-label>
+        <input matInput placeholder="San Francisco" type="text" formControlName="city">
+        <!-- <mat-error><app-form-error [control]="form.get('address')"></app-form-error></mat-error> -->
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline" color="primary">
+        <mat-label>Zip</mat-label>
+        <input matInput type="number" formControlName="zip">
+        <!-- <mat-error><app-form-error [control]="form.get('zip')"></app-form-error></mat-error> -->
+      </mat-form-field>
+    <!-- </div> -->
+  </div>
+    
+    <button mat-raised-button color="primary" (click)="addAddress()">Добавить адрес</button>
+
+</ng-container>

@@ -74,5 +74,8 @@
         <small *ngIf="checkFormValid('gender')" [ngStyle]="{color: '#f44336', fontSize: '10.5px'}"><app-form-error [control]="form.get('gender')" ></app-form-error></small>
     </p>
     
+    <p class="add-user-form-section addresses-section">
+      <app-addresses (formArrayCreated)="addControl($event)"></app-addresses>
+    </p>
   </form>
 </mat-card>
