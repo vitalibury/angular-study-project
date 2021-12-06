@@ -7,6 +7,6 @@ export interface IUser {
   vehicle?: String,
   image?: String,
   company?: String,
-  departament?: String,
+  department?: String,
   gender?: String
 }

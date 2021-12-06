@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { map, Observable } from 'rxjs';
-import { IUser, UsersService } from '../..';
+import { delay, map, Observable } from 'rxjs';
+import { UsersService } from '../..';
 
 
 @Component({
@@ -22,11 +22,11 @@ export class AddUserComponent implements OnInit {
       age: new FormControl(null, [Validators.required, Validators.min(15), Validators.max(100)]),
       email: new FormControl(
         null,
-        [Validators.required, Validators.email, Validators.pattern(/@gmail.com\b/)],
-        [this.existEmailAsyncValidator(this.usersService)]
+        [Validators.required, , Validators.email, Validators.pattern(/@gmail.com\b/)],
+        [this.existEmailAsyncValidator()]
         ),
       company: new FormControl(null, Validators.maxLength(35)),
-      departament: new FormControl(null, Validators.minLength(6)),
+      department: new FormControl(null, Validators.minLength(6)),
       // photo: new FormControl(null),
       gender: new FormControl(null, Validators.required)
     });
@@ -38,9 +38,11 @@ export class AddUserComponent implements OnInit {
     return hasError;
   } 
 
-  existEmailAsyncValidator(service: UsersService): AsyncValidatorFn {
+  existEmailAsyncValidator(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors>  => {
-        return this.usersService.isEmailExist(control.value);
+        return this.usersService.isEmailExist(control.value).pipe(map(
+          existence => existence ? {emailExist: true} : null
+        ), delay(1000));
       }
   }
 

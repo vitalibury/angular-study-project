@@ -16,11 +16,11 @@ export class UsersComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  callChangeMode() {
+  callChangeMode(): void {
     this.changeMode.emit(true);
   }
 
-  callAllDeactivation() {
+  callAllDeactivation():void {
     this.deactivateAllowedUsers.emit(true);
   }
 

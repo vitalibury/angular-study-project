@@ -70,3 +70,7 @@
     // }
   }
 }
+
+::ng-deep .mat-form-field-appearance-outline.ng-pending .mat-form-field-outline-thick{
+  color: yellow;
+}

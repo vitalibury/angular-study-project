@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { delay, finalize, Observable, of, Subscription } from 'rxjs';
 import { IUser, UsersService } from '../..';
 import { AddUserComponent } from '../../components/add-user';
 
@@ -9,12 +10,14 @@ import { AddUserComponent } from '../../components/add-user';
   styleUrls: ['./add-user-shell.component.scss']
 })
 
-export class AddUserShellComponent implements OnInit {
+export class AddUserShellComponent implements OnDestroy {
 
   formTitle = 'Добавление нового пользователя';
   
   @ViewChild(AddUserComponent)
   private formComponent:AddUserComponent;
+
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private usersService: UsersService,
@@ -22,10 +25,11 @@ export class AddUserShellComponent implements OnInit {
     public route: ActivatedRoute
     ) {}
 
-  ngOnInit(): void {
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
-  goToMainPage() {
+  goToMainPage(): void {
     this.router.navigate(['']);
   }
 
@@ -33,16 +37,25 @@ export class AddUserShellComponent implements OnInit {
     if (this.formComponent.form.invalid) {
       this.formComponent.form.markAllAsTouched();
     } else {
-      const newUser: IUser = this.createNewUserObject();
-      this.usersService.addNewUser(newUser);
-      setTimeout(() => {
-        this.goToMainPage();
-      }, 500);
+      const newUser: Observable<IUser> = this.createNewUserObject();
+      // this.usersService.addNewUser(newUser).pipe(  // Почему такой вариант не срабатывает?
+      //   finalize(() => {
+      //     console.log(this)
+      //     this.goToMainPage()}
+      // ));
+      this.subscriptions.add(this.usersService // Работает только при возврате из usersService.addNewUser значения
+        .addNewUser(newUser)
+        .pipe(delay(2000))
+        .subscribe(() => {
+          this.goToMainPage();
+        }
+      ));
     }
   }
 
-  createNewUserObject(): IUser {
-    const nextId = this.usersService.getUsers().length;
+  createNewUserObject(): Observable<IUser> {
+    let nextId: Number;
+    this.subscriptions.add(this.usersService.getUsersNextIndex().subscribe(id => nextId = id));
     const formValue = this.formComponent.form.value;
     const newUser: IUser = {
       id: nextId,
@@ -51,12 +64,12 @@ export class AddUserShellComponent implements OnInit {
       email: formValue.email,
       activated: true,
       company: formValue.company,
-      departament: formValue.departament,
+      department: formValue.department,
       gender: formValue.gender,
       vehicle: formValue.vehicle ? formValue.vehicle : 'No Vehicle',
       image: formValue.image ? formValue.image : '../../../assets/no car.png',
     }
-    return newUser;
+    return of(newUser);
   }
 
 }

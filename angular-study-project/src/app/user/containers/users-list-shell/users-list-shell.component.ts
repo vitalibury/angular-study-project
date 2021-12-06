@@ -23,7 +23,7 @@ export class UsersListShellComponent implements OnInit, OnDestroy {
 
   constructor(private usersService: UsersService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     // this.usersService.users$.pipe(takeUntil(this.destroy$)).subscribe(users => {
     //   this.users$ = users
     // });
@@ -31,7 +31,7 @@ export class UsersListShellComponent implements OnInit, OnDestroy {
     // // this.filterUsers();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     // this.destroy$.next();
     // this.destroy$.complete();
   }
@@ -53,7 +53,7 @@ export class UsersListShellComponent implements OnInit, OnDestroy {
   //   this.filterUsers();
   // }
 
-  deactivateParticularUser(user: IUser) {
+  deactivateParticularUser(user: IUser): void {
     this.usersService.deactivateParticular(user);
   }
 

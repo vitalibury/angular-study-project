@@ -31,17 +31,26 @@ export class UsersService {
     return this.users;
   }
 
-  addNewUser(user: IUser) {
-    this.users.push(user);
+  getUsersNextIndex(): Observable<Number> {
+    return of(this.users.length);
   }
 
-  deactivateParticular(user: IUser) {
+  addNewUser(user: Observable<IUser>): Observable<Number> {
+    user.subscribe(user => {
+      this.users.push(user);
+    });
+    return of(1);
+  }
+
+  deactivateParticular(user: IUser): Observable<void> {
     const userIndex = this.users.findIndex(u => u.id === user.id);
     this.users.splice(userIndex, 1, user);
+    return of();
   }
 
-  isEmailExist(email: String) {
-    return of(this.users.findIndex(user => user.email === email) !== -1 ? { emailExist: true } : null)
+  isEmailExist(email: String): Observable<Boolean> {
+    const existence = this.users.findIndex(user => user.email === email) !== -1 ? true : false;
+    return of(existence);
   }
 
 }

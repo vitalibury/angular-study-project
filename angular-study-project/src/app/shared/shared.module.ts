@@ -3,14 +3,19 @@ import { CommonModule } from '@angular/common';
 
 import { MaterialModule } from '../material';
 
-import { UserItemComponent, VehicleComponent } from '.';
+import {
+  FormErrorComponent,
+  UserItemComponent,
+  VehicleComponent
+} from '.';
 
 
 
 @NgModule({
   declarations: [
     UserItemComponent,
-    VehicleComponent
+    VehicleComponent,
+    FormErrorComponent
   ],
   imports: [
     CommonModule,
@@ -18,6 +23,7 @@ import { UserItemComponent, VehicleComponent } from '.';
   ],
   exports: [
     UserItemComponent,
+    FormErrorComponent,
     MaterialModule
   ]
 })
