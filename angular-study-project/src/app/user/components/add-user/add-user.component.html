@@ -1,0 +1,78 @@
+<mat-card class="add-user-card">
+  <mat-card-title class="add-user-title"><ng-content></ng-content></mat-card-title>
+  <form class="add-user-form" [formGroup]="form"> 
+    
+    <p class="add-user-form-section">
+      <mat-form-field appearance="outline" color="primary">
+        <mat-label>First Name:</mat-label>
+        <input matInput type="text" placeholder="Andrew" formControlName="firstName">
+        <mat-error><app-form-error [control]="form.get('firstName')" ></app-form-error></mat-error>
+      </mat-form-field>
+    </p>
+    
+    <p class="add-user-form-section">
+      <mat-form-field appearance="outline" color="primary">
+        <mat-label>Last Name:</mat-label>
+        <input matInput type="text" placeholder="Brown" formControlName="lastName">
+        <mat-error><app-form-error [control]="form.get('lastName')" ></app-form-error></mat-error>
+      </mat-form-field>
+    </p>
+    
+    <p class="add-user-form-section">
+      <mat-form-field appearance="outline" color="primary">
+        <mat-label>Age:</mat-label>
+        <input matInput type="number" formControlName="age">
+        <mat-error><app-form-error [control]="form.get('age')" ></app-form-error></mat-error>
+      </mat-form-field>
+    </p>
+    
+    <p class="add-user-form-section">
+      <mat-form-field appearance="outline" color="primary">
+        <mat-label>Email:</mat-label>
+        <input matInput type="email" formControlName="email">        
+        <!-- <mat-error *ngIf="form.get('email').hasError('required'); else secondError">Type email please</mat-error>
+        <ng-template #secondError>
+          <mat-error *ngIf="form.get('email').hasError('email'); else thirdError">Type correct email format</mat-error>
+        </ng-template>
+        <ng-template #thirdError>
+          <mat-error *ngIf="form.get('email').hasError('pattern'); else fourthError">Email should have &quot;@gmail.com&quot; domain</mat-error>
+        </ng-template>
+        <ng-template #fourthError>
+          <mat-error *ngIf="form.get('email').hasError('emailExist')">This email is already registered</mat-error>
+        </ng-template> -->
+        <mat-error><app-form-error [control]="form.get('email')"></app-form-error></mat-error>
+      </mat-form-field>
+    </p>
+    
+    <p class="add-user-form-section">
+      <mat-form-field appearance="outline" color="primary">
+        <mat-label>Company:</mat-label>
+        <input matInput type="text" formControlName="company">
+        <mat-error><app-form-error [control]="form.get('company')"></app-form-error></mat-error>
+      </mat-form-field>
+    </p>
+    
+    <p class="add-user-form-section">
+      <mat-form-field appearance="outline" color="primary">
+        <mat-label>Department:</mat-label>
+        <input matInput type="text" formControlName="department">
+        <mat-error><app-form-error [control]="form.get('department')" ></app-form-error></mat-error>
+      </mat-form-field>
+    </p>
+    
+    <!-- <p class="add-user-form-section file-section">
+      <label class="manual-label" for="user-form-file">Photo: </label>
+      <input class="file-input" id="user-form-file" type="file" formControlName="photo">
+    </p> -->
+    
+    <p class="add-user-form-section gender-section">
+        <mat-radio-group class="form-radio-group" aria-label="user-form-gender" formControlName="gender">
+          <mat-label class="manual-label" id="user-form-gender">Gender: </mat-label>
+          <mat-radio-button class="add-user-form-radio" value="Male">Male</mat-radio-button>
+          <mat-radio-button class="add-user-form-radio" value="Female">Female</mat-radio-button>
+        </mat-radio-group>
+        <small *ngIf="checkFormValid('gender')" [ngStyle]="{color: '#f44336', fontSize: '10.5px'}"><app-form-error [control]="form.get('gender')" ></app-form-error></small>
+    </p>
+    
+  </form>
+</mat-card>

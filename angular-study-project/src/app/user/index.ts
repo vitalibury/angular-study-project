@@ -1,5 +1,5 @@
-export * from './components';
 export * from './containers';
+export * from './components';
 
 export { IUser } from './interfaces';
 export { UsersModule } from './users.module';
