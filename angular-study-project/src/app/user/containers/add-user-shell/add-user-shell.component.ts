@@ -36,6 +36,7 @@ export class AddUserShellComponent implements OnDestroy {
   submitNewUserForm(): void {
     if (this.formComponent.form.invalid) {
       this.formComponent.form.markAllAsTouched();
+      console.log(this.formComponent)
     } else {
       const newUser: Observable<IUser> = this.createNewUserObject();
       // this.usersService.addNewUser(newUser).pipe(  // Почему такой вариант не срабатывает?
@@ -68,6 +69,7 @@ export class AddUserShellComponent implements OnDestroy {
       gender: formValue.gender,
       vehicle: formValue.vehicle ? formValue.vehicle : 'No Vehicle',
       image: formValue.image ? formValue.image : '../../../assets/no car.png',
+      addresses: formValue.addresses ? formValue.addresses : null
     }
     return of(newUser);
   }

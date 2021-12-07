@@ -5,18 +5,13 @@ const errorsConfig = {
   minlength: 'Length should be greater or equal',
   pattern: 'Domain should be',
   emailExist: 'This email is already registered',
-  email: 'Type correct email',
-  required: 'This field is required',
+  email: 'Type correct email'
 }
 
-export const setSimpleError = (error: String): String => {
-  if (error === 'email' || error === 'required' || error === 'emailExist') {
+export const setError = (error: String, errors: Object): String => {
+  if (error === 'email' || error === 'emailExist') {
     return selectConfigMessage(error);
   }
-  return '';
-}
-
-export const setComplexError = (error: String, errors: Object): String => {
   if (error === 'min') {
     const minValue = errors[`${error}`].min;
     return `${selectConfigMessage(error)} ${minValue}`;

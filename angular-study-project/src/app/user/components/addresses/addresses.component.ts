@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { takeWhile } from 'rxjs';
 
 @Component({
   selector: 'app-addresses',
@@ -8,14 +9,20 @@ import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class AddressesComponent implements OnInit {
 
-  addressesArrayForm: FormArray;
+  addressesForm: FormGroup;
+  addressesArray: FormArray;
   @Output() formArrayCreated = new EventEmitter();
 
   constructor() { }
 
   ngOnInit(): void {
-    this.addressesArrayForm = new FormArray([this.createAddressFormGroup()]);
-    this.formArrayCreated.emit(this.addressesArrayForm);
+    this.addressesArray = new FormArray([this.createAddressFormGroup()]);
+    this.addressesForm = new FormGroup({addresses: this.addressesArray});
+    this.formArrayCreated.emit(this.addressesArray);
+  }
+
+  get addressesControls() {
+    return this.addressesArray.controls as FormGroup[];
   }
 
   createAddressFormGroup(): FormGroup {
@@ -24,12 +31,40 @@ export class AddressesComponent implements OnInit {
       city: new FormControl(),
       zip: new FormControl()
     });
+
+    this.changeZipControl(addressGroup);
+
+    addressGroup.get('city').valueChanges
+      .pipe(
+        takeWhile(() => (!!addressGroup && !!addressGroup.get('city')))  // убивается ли подписка таким образом?
+      )
+      .subscribe(() => {
+        this.changeZipControl(addressGroup);
+      });
+
     return addressGroup;
   }
 
   addAddress(): void {
     const newAddressForm = this.createAddressFormGroup();
-    this.addressesArrayForm.push(newAddressForm);
+    this.addressesArray.push(newAddressForm);
+  }
+
+  deleteAddress(index: number): void {
+    this.addressesControls.splice(index, 1);
+    this.addressesArray.updateValueAndValidity();
+  }
+
+  changeZipControl(formGroup: FormGroup): void {
+    const cityControl = formGroup.get('city');
+    const zipControl = formGroup.get('zip');
+    if (cityControl.value) {
+      zipControl.setValidators(Validators.required);
+      zipControl.enable();
+    } else {
+      zipControl.setValue('');
+      zipControl.disable();
+    }
   }
 
 }

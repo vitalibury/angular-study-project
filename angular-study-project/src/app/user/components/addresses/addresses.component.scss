@@ -1,0 +1,17 @@
+.address {
+  margin: 0 auto;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  // padding-bottom: 0;
+  width: 20rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: solid 1px rgb(214, 214, 214);
+  border-radius: 0.5rem;
+}
+
+.delete-address-btn {
+  width: 10rem;
+  align-self: flex-end;
+}

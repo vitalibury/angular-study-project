@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, ViewChildren } from '@angular/core';
 import { IUser, UsersService } from '../..';
 
 import { UserItemComponent } from 'src/app/shared';
-import { map, Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-users-list-shell',
@@ -12,11 +12,9 @@ import { map, Observable, Subject } from 'rxjs';
 })
 export class UsersListShellComponent implements OnInit, OnDestroy {
 
-  // private destroy$ = new Subject<void>();
   users: IUser[];
   isShowDeactivated: Boolean = true;
   users$: Observable<IUser[]> = this.usersService.users$;
-  // users$: Observable<IUser[]> = this.usersService.users$;
 
   @ViewChildren(UserItemComponent)
   private userCards: UserItemComponent[];
@@ -24,34 +22,14 @@ export class UsersListShellComponent implements OnInit, OnDestroy {
   constructor(private usersService: UsersService) {}
 
   ngOnInit(): void {
-    // this.usersService.users$.pipe(takeUntil(this.destroy$)).subscribe(users => {
-    //   this.users$ = users
-    // });
-
-    // // this.filterUsers();
   }
 
   ngOnDestroy(): void {
-    // this.destroy$.next();
-    // this.destroy$.complete();
   }
-
-  // filterUsers(): void {
-  //   this.isShowDeactivated ?
-  //   this.users$ = this.usersService.users$ :
-  //   this.users$ = this.usersService.users$.pipe(map(users => users.filter(user => user.activated)));
-  //   // this.users = this.usersService.getUsers() :
-  //   // this.users = this.usersService.getUsers().filter(user => user.activated);
-  // }
 
   showHideDeactivated():void {
     this.isShowDeactivated = !this.isShowDeactivated;
   }
-
-  // changeMode():void {
-  //   this.showHideDeactivated();
-  //   this.filterUsers();
-  // }
 
   deactivateParticularUser(user: IUser): void {
     this.usersService.deactivateParticular(user);
