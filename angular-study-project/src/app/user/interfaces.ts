@@ -8,5 +8,6 @@ export interface IUser {
   image?: String,
   company?: String,
   department?: String,
-  gender?: String
+  gender?: String,
+  addresses?: Object
 }

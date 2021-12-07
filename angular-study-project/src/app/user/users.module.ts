@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared';
 
 import {
+  AddressesComponent,
   AddUserComponent,
   AddUserShellComponent,
   UsersComponent,
@@ -17,7 +18,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     UsersListShellComponent,
     UsersComponent,
     AddUserComponent,
-    AddUserShellComponent
+    AddUserShellComponent,
+    AddressesComponent
   ],
   imports: [
     CommonModule,

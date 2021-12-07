@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
-import { setSimpleError, setComplexError } from './form-errors';
+import { setError } from './form-errors';
 
 @Component({
   selector: 'app-form-error',
@@ -13,11 +13,9 @@ export class FormErrorComponent implements OnInit, OnDestroy {
 
   @Input() control: AbstractControl;
 
-  message: String;
-
   subscription: Subscription = new Subscription();
 
-  errorContent: String;
+  message: String;
 
   constructor() { }
 
@@ -32,31 +30,23 @@ export class FormErrorComponent implements OnInit, OnDestroy {
     }
     ));
   }
-  
-    ngOnDestroy() {
-      this.subscription.unsubscribe();
-    }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 
   defineErrorMessage(control: AbstractControl) {
     if (control.errors) {
-      for (const err in control.errors) {
-        if (control.errors.hasOwnProperty(err)) {
-          console.log(err)
-          const complexError = setComplexError(err, this.control.errors);
-          if (complexError) {
-            console.log(complexError)
-            this.message = complexError;
-          }
-        }
-      }
-      for (const err in control.errors) {
-        console.log(control.errors)
-        if (control.errors.hasOwnProperty(err)) {
-          const simpleError = setSimpleError(err);
-          console.log(control.errors)
-          if (simpleError) {
-            console.log(simpleError)
-            this.message = simpleError;
+      if (control.errors['required']) {
+        this.message = 'This field is required';
+      } else {
+        for (const err in control.errors) {
+          if (control.errors.hasOwnProperty(err)) {
+            const errorMessage = setError(err, control.errors);
+            if (errorMessage) {
+              this.message = errorMessage;
+              break;
+            }
           }
         }
       }
