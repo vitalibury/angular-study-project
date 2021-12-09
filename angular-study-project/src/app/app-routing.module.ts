@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { MainLayoutComponent } from './layout';
+import { RxjsComponent } from './rxjs';
 import { AddUserShellComponent, UsersListShellComponent } from './user';
 
 const routes: Routes = [
@@ -11,6 +12,7 @@ const routes: Routes = [
       { path: '', redirectTo: '/', pathMatch: 'full' },
       { path: '', component: UsersListShellComponent },
       { path: 'add-user', component: AddUserShellComponent },
+      { path: 'rxjs', component: RxjsComponent }
       // {path: 'cards', component: ContactCardsComponent},
       // {path: 'about', component: AboutComponent}
     ]
