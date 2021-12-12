@@ -1,11 +1,14 @@
 <div class="rxjs-block">
   <h2>RxJs Operators</h2>
 
-  <p>Clicks: {{counter$ | async}}</p>
-
-<button mat-raised-button color="primary" (click)="onButtonClick('refresh')">1. Refresh</button>
-<button mat-raised-button color="primary" (click)="onButtonClick('export')">2. Export</button>
-<button mat-raised-button color="primary" (click)="onButtonClick('save')">3. Save</button>
-<button mat-raised-button color="primary" (click)="onButtonClick('send')">4. Send</button>
+  <div>Refresh clicks: {{refreshCounter$ | async}}</div>
+  <div>Export clicks: {{exportCounter$ | async}}</div>
+  <div>Save clicks: {{saveCounter$ | async}}</div>
+  <div>Send clicks: {{sendCounter$ | async}}</div>
+  
+  <button mat-raised-button color="primary" (click)="onRefreshClick()">1. Refresh</button>
+  <button mat-raised-button color="primary" (click)="onExportClick()">2. Export</button>
+  <button mat-raised-button color="primary" (click)="onSaveClick()">3. Save</button>
+  <button mat-raised-button color="primary" (click)="onSendClick()">4. Send</button>
 
 </div>

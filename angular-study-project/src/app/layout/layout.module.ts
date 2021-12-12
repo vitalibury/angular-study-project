@@ -5,6 +5,8 @@ import { RouterModule } from '@angular/router';
 import { MaterialModule } from '../material';
 
 import { HeaderComponent, MainLayoutComponent } from '.';
+import { UsersModule } from '../user/users.module';
+import { RxJsModule } from '../rxjs/rxjs.module';
 
 
 
@@ -17,6 +19,8 @@ import { HeaderComponent, MainLayoutComponent } from '.';
     CommonModule,
     RouterModule,
     MaterialModule,
+    UsersModule,
+    RxJsModule
   ]
 })
 export class LayoutModule { }

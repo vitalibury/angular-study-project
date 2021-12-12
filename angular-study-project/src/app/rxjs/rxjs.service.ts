@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, concatMap, debounceTime, delay, map, mergeAll, Observable, of, tap, throttleTime } from 'rxjs';
+import { BehaviorSubject, delay, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,57 +8,32 @@ export class RxjsService {
 
   constructor() { }
 
-  clickCounter$: BehaviorSubject<number> = new BehaviorSubject(0);
-  buttonMode$: BehaviorSubject<string> = new BehaviorSubject('');
+  clickRefreshSub: BehaviorSubject<number> = new BehaviorSubject(0);
+  clickExportSub: BehaviorSubject<number> = new BehaviorSubject(0);
+  clickSaveSub: BehaviorSubject<number> = new BehaviorSubject(0);
+  clickSendSub: BehaviorSubject<number> = new BehaviorSubject(0);
 
-  delay: number = 2000;
-
-  changeMode(mode: string): void {
-    this.buttonMode$.next(mode);
-    this.clickCounter$.next(1);
+  refresh(): Observable<number> {    
+    const nextCount = this.clickRefreshSub.getValue() + 1;
+    this.clickRefreshSub.next(nextCount);
+    return this.clickRefreshSub;
   }
 
-  increaseClick() {
-    const nextCount = this.clickCounter$.getValue() + 1;
-    this.clickCounter$.next(nextCount);
+  export(): void {
+    this.clickExportSub.next(this.clickExportSub.getValue() + 1);
   }
 
-  refresh(): Observable<number> {
-    return this.clickCounter$.pipe(
-      debounceTime(this.delay),
-      tap((x) => console.log('Refresh: ' + x))
-    )
+  save(): void {
+    this.clickSaveSub.next(this.clickSaveSub.getValue() + 1);
   }
 
-  export(): Observable<number> {
-    const clicksMap = this.clickCounter$.pipe(
-      map(i => of(i).pipe(delay(this.randomDelay())))
-    );
-    return clicksMap.pipe(
-      mergeAll(),
-      tap((x) => console.log('Export: ' + x))
-    )
+  send() {
+    this.clickSendSub.next(this.clickSendSub.getValue() + 1);
   }
 
-  save(): Observable<number> {
-    return this.clickCounter$.pipe(
-      concatMap(
-        i => of(i).pipe(delay(this.randomDelay()))
-      ),
-      tap((x) => console.log('Save: ' + x))
-    )
-  }
-
-  send(): Observable<number> {
-    return this.clickCounter$.pipe(
-      throttleTime(this.delay),
-      tap((x) => console.log('Send: ' + x))
-    )
-  }
-
-  randomDelay(): number {
+  randomDelay(mode: string): number {
     const value = Math.floor(Math.random() * (6000 - 1000 + 1)) + 1000;
-    console.log('delay: ' + value + ' ms');
+    console.log(mode + ' delay: ' + value + ' ms');
     return value;
   }
 }
