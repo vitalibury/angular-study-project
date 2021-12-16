@@ -3,7 +3,8 @@ import { Component, OnDestroy, OnInit, ViewChildren } from '@angular/core';
 import { IUser, UsersService } from '../..';
 
 import { UserItemComponent } from 'src/app/shared';
-import { Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, EMPTY, first, Observable, of, Subscription, switchMap } from 'rxjs';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-users-list-shell',
@@ -12,9 +13,13 @@ import { Observable } from 'rxjs';
 })
 export class UsersListShellComponent implements OnInit, OnDestroy {
 
+  subscription: Subscription = new Subscription();
+
+  searchForm: FormGroup;
   users: IUser[];
   isShowDeactivated: Boolean = true;
-  users$: Observable<IUser[]> = this.usersService.users$;
+  // users$: Observable<IUser[]> = this.usersService.users$;
+  users$: Observable<IUser[]>;
 
   @ViewChildren(UserItemComponent)
   private userCards: UserItemComponent[];
@@ -22,9 +27,27 @@ export class UsersListShellComponent implements OnInit, OnDestroy {
   constructor(private usersService: UsersService) {}
 
   ngOnInit(): void {
+    this.users$ = this.usersService.getUsers();
+    this.searchForm = new FormGroup({
+      searchField: new FormControl('')
+    });
+
+    this.subscription.add(this.searchForm.get('searchField').valueChanges.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap(value => {
+        if (value) {
+          this.users$ = this.usersService.filterUsers(value.trim().toLowerCase());
+        } else {
+          this.users$ = this.usersService.getUsers() as Observable<IUser[]>;
+        }
+        return EMPTY;
+      })
+    ).subscribe());
   }
 
   ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   showHideDeactivated():void {

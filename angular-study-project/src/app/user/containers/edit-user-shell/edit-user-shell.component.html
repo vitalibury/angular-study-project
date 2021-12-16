@@ -1,0 +1,13 @@
+<app-user-form [user]="user$ | async">{{formTitle}}</app-user-form>
+
+<div class="button-container">
+  <button
+    class="submit-btn"
+    mat-raised-button
+    type="button"
+    (click)="submitUserForm()"
+    color="primary"
+  >
+    Сохранить пользователя
+  </button>
+</div>

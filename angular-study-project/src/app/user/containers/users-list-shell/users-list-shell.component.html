@@ -1,4 +1,12 @@
-<app-users [isShowDeactivated]="isShowDeactivated" (changeMode)="showHideDeactivated()" (deactivateAllowedUsers)="deactivateAllowedUsers()"></app-users>
+<div class="controls">
+  <app-users [isShowDeactivated]="isShowDeactivated" (changeMode)="showHideDeactivated()" (deactivateAllowedUsers)="deactivateAllowedUsers()"></app-users>
+  <div [formGroup]="searchForm">
+    <mat-form-field class="search-field" appearance="outline" color="primary">
+      <mat-label>Search user:</mat-label>
+      <input matInput type="text" formControlName="searchField">
+    </mat-form-field>
+  </div>
+</div>
 
 <div class="users" *ngIf="users$; else loader">
   <ng-container  *ngFor="let user of users$ | async">

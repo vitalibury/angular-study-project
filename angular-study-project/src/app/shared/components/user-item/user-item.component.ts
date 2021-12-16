@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { IUser, UsersService } from 'src/app/user';
 
 @Component({
@@ -13,7 +14,7 @@ export class UserItemComponent implements OnInit {
   @Output() userLog = new EventEmitter<IUser>();
   @Output() deactivateUser = new EventEmitter<IUser>();
 
-  constructor(private usersService: UsersService) { }
+  constructor(private usersService: UsersService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -27,6 +28,10 @@ export class UserItemComponent implements OnInit {
 
   log(user: IUser): void {
     this.userLog.emit(user);
+  }
+
+  goToEditPage() {
+    this.router.navigate(['/edit-user', this.user.id])
   }
 
 }
