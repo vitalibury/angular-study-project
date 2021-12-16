@@ -21,7 +21,7 @@ export class AddressesComponent implements OnInit {
     this.formArrayCreated.emit(this.addressesArray);
   }
 
-  get addressesControls() {
+  get addressesControls(): FormGroup[] {
     return this.addressesArray.controls as FormGroup[];
   }
 
