@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, delay, Observable } from 'rxjs';
+import { BehaviorSubject, delay, Observable, of, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,27 +13,32 @@ export class RxjsService {
   clickSaveSub: BehaviorSubject<number> = new BehaviorSubject(0);
   clickSendSub: BehaviorSubject<number> = new BehaviorSubject(0);
 
-  refresh(): Observable<number> {    
-    const nextCount = this.clickRefreshSub.getValue() + 1;
-    this.clickRefreshSub.next(nextCount);
-    return this.clickRefreshSub;
+  refresh(): Observable<number> {
+    this.clickRefreshSub.next(this.clickRefreshSub.getValue() + 1);
+    return this.clickRefreshSub.pipe(delay(2000));
   }
 
-  export(): void {
+  export(): Observable<number> {
     this.clickExportSub.next(this.clickExportSub.getValue() + 1);
+    const newObserv = of(this.clickExportSub.getValue());
+    return newObserv.pipe(delay(this.randomDelay()));
   }
 
-  save(): void {
+  save(): Observable<number> {
     this.clickSaveSub.next(this.clickSaveSub.getValue() + 1);
+    const newObserv = of(this.clickSaveSub.getValue());
+    return newObserv.pipe(delay(this.randomDelay()));
   }
 
-  send() {
+  send(): Observable<number> {
     this.clickSendSub.next(this.clickSendSub.getValue() + 1);
+    const newObserv = of(this.clickSendSub.getValue());
+    return newObserv.pipe(delay(2000));
   }
 
-  randomDelay(mode: string): number {
+  randomDelay(): number {
     const value = Math.floor(Math.random() * (6000 - 1000 + 1)) + 1000;
-    console.log(mode + ' delay: ' + value + ' ms');
+    console.log(' delay: ' + value + ' ms');
     return value;
   }
 }
