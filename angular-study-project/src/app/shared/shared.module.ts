@@ -11,6 +11,7 @@ import {
   VehicleComponent
 } from '.';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LeaveFormPagePopupComponent } from './components/leave-form-page-popup/leave-form-page-popup.component';
 
 
 
@@ -20,7 +21,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     UserFormComponent,
     AddressesComponent,
     VehicleComponent,
-    FormErrorComponent
+    FormErrorComponent,
+    LeaveFormPagePopupComponent
   ],
   imports: [
     CommonModule,
@@ -32,8 +34,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     UserItemComponent,
     UserFormComponent,
     AddressesComponent,
-    FormErrorComponent,
-    MaterialModule
+    FormErrorComponent
   ]
 })
 export class SharedModule { }

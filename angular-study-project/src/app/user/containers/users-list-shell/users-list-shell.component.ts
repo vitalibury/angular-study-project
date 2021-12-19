@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, ViewChildren } from '@angular/core';
 import { IUser, UsersService } from '../..';
 
 import { UserItemComponent } from 'src/app/shared';
-import { debounceTime, distinctUntilChanged, EMPTY, first, Observable, of, Subscription, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, EMPTY, first, Observable, of, Subscription, switchMap, tap } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -18,13 +18,12 @@ export class UsersListShellComponent implements OnInit, OnDestroy {
   searchForm: FormGroup;
   users: IUser[];
   isShowDeactivated: Boolean = true;
-  // users$: Observable<IUser[]> = this.usersService.users$;
   users$: Observable<IUser[]>;
 
   @ViewChildren(UserItemComponent)
   private userCards: UserItemComponent[];
 
-  constructor(private usersService: UsersService) {}
+  constructor(private usersService: UsersService) { }
 
   ngOnInit(): void {
     this.users$ = this.usersService.getUsers();
@@ -35,13 +34,12 @@ export class UsersListShellComponent implements OnInit, OnDestroy {
     this.subscription.add(this.searchForm.get('searchField').valueChanges.pipe(
       debounceTime(500),
       distinctUntilChanged(),
-      switchMap(value => {
+      tap(value => {
         if (value) {
           this.users$ = this.usersService.filterUsers(value.trim().toLowerCase());
         } else {
           this.users$ = this.usersService.getUsers() as Observable<IUser[]>;
         }
-        return EMPTY;
       })
     ).subscribe());
   }
@@ -50,7 +48,7 @@ export class UsersListShellComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  showHideDeactivated():void {
+  showHideDeactivated(): void {
     this.isShowDeactivated = !this.isShowDeactivated;
   }
 
@@ -58,11 +56,11 @@ export class UsersListShellComponent implements OnInit, OnDestroy {
     this.usersService.deactivateParticular(user);
   }
 
-  deactivateAllowedUsers():void {
+  deactivateAllowedUsers(): void {
     this.userCards.forEach(card => card.deactivate(card.user));
   }
 
-  userLog(user: any):void {
+  userLog(user: any): void {
     console.log(user);
   }
 

@@ -3,8 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { MainLayoutComponent } from './layout';
 import { UnsavedFormCheckGuard } from './shared/guards/unsaved-form-check/unsaved-form-check.guard';
-import { AddUserShellComponent, UsersListShellComponent } from './user';
-import { EditUserShellComponent } from './user/containers/edit-user-shell/edit-user-shell.component';
+import { AddUserShellComponent, EditUserShellComponent, UsersListShellComponent } from './user';
 
 const routes: Routes = [
   {
@@ -12,7 +11,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: '/', pathMatch: 'full' },
       { path: '', component: UsersListShellComponent },
-      { path: 'add-user', component: AddUserShellComponent },
+      { path: 'add-user', canDeactivate:[UnsavedFormCheckGuard], component: AddUserShellComponent },
       { path: 'edit-user/:id', canDeactivate:[UnsavedFormCheckGuard], component: EditUserShellComponent }
     ]
   }

@@ -1,7 +1,9 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { first, Observable, of, Subscription, switchMap } from 'rxjs';
+import { exhaustMap, map, Observable, Subject, Subscription } from 'rxjs';
 import { UserFormComponent } from 'src/app/shared';
+import { LeaveFormPagePopupComponent } from 'src/app/shared/components/leave-form-page-popup/leave-form-page-popup.component';
 import { ComponentCanDeactivate } from 'src/app/shared/interfaces/component-can-deactivate';
 import { UsersService } from '../..';
 import { IUser } from '../../interfaces';
@@ -11,11 +13,12 @@ import { IUser } from '../../interfaces';
   templateUrl: './edit-user-shell.component.html',
   styleUrls: ['./edit-user-shell.component.scss']
 })
-export class EditUserShellComponent implements OnInit, AfterViewInit, OnDestroy, ComponentCanDeactivate {
+export class EditUserShellComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
 
   @ViewChild(UserFormComponent)
   private formComponent: UserFormComponent;
 
+  newUserSubj: Subject<IUser> = new Subject();
   subscription: Subscription = new Subscription();
 
   user$: Observable<IUser>;
@@ -26,16 +29,16 @@ export class EditUserShellComponent implements OnInit, AfterViewInit, OnDestroy,
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private usersService: UsersService
+    private usersService: UsersService,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
     this.user$ = this.usersService.getUserById(this.route.snapshot.params['id']);
-  }
-
-  ngAfterViewInit(): void {
-    this.subscription.add(this.formComponent.form.valueChanges
-      .subscribe(() => this.formIsDirty = true));
+    this.subscription.add(this.newUserSubj.pipe(
+      exhaustMap(newUser => this.user$.pipe(map(user => ({...user, ...newUser})))),
+      exhaustMap(user => this.usersService.updateUser(user))
+    ).subscribe(() => this.goToMainPage()));
   }
 
   ngOnDestroy(): void {
@@ -43,23 +46,25 @@ export class EditUserShellComponent implements OnInit, AfterViewInit, OnDestroy,
   }
 
   canDeactivate(): boolean | Observable<boolean> {
-    return (!this.formIsDirty && !this.formComponent.form.touched);
+    return !this.formComponent.form.dirty;
   };
+
+  openDialog(): boolean | Observable<boolean> {
+    const dialogRef = this.dialog.open(LeaveFormPagePopupComponent, {
+      data: this.formComponent.changedFields,
+      width: '600px'
+    });
+    return dialogRef.afterClosed()
+  }
+
 
   submitUserForm(): void {
     this.formIsDirty = false;
     if (this.formComponent.form.invalid) {
-      // this.formComponent.form.markAllAsTouched();
-      console.log(this.formComponent.form.controls);
+      this.formComponent.markFormAsChecked();
     } else {
-      this.user$.pipe(
-        switchMap(user => {
-          const newUser: IUser = { ...user, ...this.formComponent.form.value }
-          return this.usersService.updateUser(of(newUser));
-        }),
-        first()
-      )
-        .subscribe(() => this.goToMainPage())
+      this.formComponent.form.markAsPristine();
+      this.newUserSubj.next(this.formComponent.form.value);
     }
   }
 

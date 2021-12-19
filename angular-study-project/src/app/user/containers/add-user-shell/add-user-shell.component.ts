@@ -1,7 +1,10 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { first, map, Observable, of, Subscription, switchMap } from 'rxjs';
+import { exhaustMap, map, Observable, Subject, Subscription } from 'rxjs';
 import { UserFormComponent } from 'src/app/shared';
+import { LeaveFormPagePopupComponent } from 'src/app/shared/components/leave-form-page-popup/leave-form-page-popup.component';
+import { ComponentCanDeactivate } from 'src/app/shared/interfaces/component-can-deactivate';
 import { IUser, UsersService } from '../..';
 
 @Component({
@@ -10,11 +13,14 @@ import { IUser, UsersService } from '../..';
   styleUrls: ['./add-user-shell.component.scss']
 })
 
-export class AddUserShellComponent implements OnDestroy {
+export class AddUserShellComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
 
   @ViewChild(UserFormComponent)
   private formComponent: UserFormComponent;
 
+  newUserSubj: Subject<IUser> = new Subject();
+
+  newUserNextId: number;
   formTitle = 'Добавление нового пользователя';
 
   private subscriptions: Subscription = new Subscription();
@@ -22,11 +28,32 @@ export class AddUserShellComponent implements OnDestroy {
   constructor(
     private usersService: UsersService,
     private router: Router,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
+    public dialog: MatDialog
   ) { }
 
-  ngOnDestroy() {
+  ngOnInit(): void {
+    this.subscriptions.add(this.usersService.getUsersNextId().subscribe(id => this.newUserNextId = id));
+    this.subscriptions.add(this.newUserSubj.pipe(
+      map((user) => this.createNewUserObject(user)),
+      exhaustMap(user => this.usersService.addNewUser(user))
+    ).subscribe(() => this.goToMainPage()));
+  }
+
+  ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+  }
+
+  canDeactivate(): boolean | Observable<boolean> {
+    return !this.formComponent.form.dirty;
+  };
+
+  openDialog(): boolean | Observable<boolean> {
+    const dialogRef = this.dialog.open(LeaveFormPagePopupComponent, {
+      data: this.formComponent.changedFields,
+      width: '600px'
+    });
+    return dialogRef.afterClosed()
   }
 
   goToMainPage(): void {
@@ -35,22 +62,17 @@ export class AddUserShellComponent implements OnDestroy {
 
   submitNewUserForm(): void {
     if (this.formComponent.form.invalid) {
-      console.log(this.formComponent.form)
-      // this.formComponent.form.markAllAsTouched();
+      this.formComponent.markFormAsChecked();
     } else {
-      const newUser = this.createNewUserObject();
-      this.usersService.addNewUser(newUser)
-        .pipe(first())
-        .subscribe(() => this.goToMainPage());
-      }
+      this.formComponent.form.markAsPristine();
+      this.newUserSubj.next(this.formComponent.form.value);
+    }
   }
 
-  createNewUserObject(): Observable<IUser> {
-    let nextId: number;
-    this.subscriptions.add(this.usersService.getUsersNextIndex().subscribe(id => nextId = id));
-    const formValue = this.formComponent.form.value;
+  createNewUserObject(formValue: IUser): IUser {
+    // const formValue = this.formComponent.form.value;
     const newUser: IUser = {
-      id: nextId,
+      id: this.newUserNextId,
       firstName: formValue.firstName,
       lastName: formValue.lastName,
       age: formValue.age,
@@ -63,7 +85,7 @@ export class AddUserShellComponent implements OnDestroy {
       image: formValue.image ? formValue.image : '../../../assets/no car.png',
       addresses: formValue.addresses ? formValue.addresses : null
     }
-    return of(newUser);
+    return newUser;
   }
 
 }

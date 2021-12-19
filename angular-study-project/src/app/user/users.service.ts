@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, delay, empty, EMPTY, filter, first, map, mergeMap, Observable, of, Subject, switchMap, tap } from 'rxjs';
+import { delay, map, Observable, of } from 'rxjs';
 import { IUser } from '.';
 
 @Injectable({
@@ -19,9 +19,7 @@ export class UsersService {
     { id: 8, firstName: 'Kevin', lastName: 'Smith', age: 46, email: 'Kevin-46@gmail.com', activated: true, vehicle: 'Mercedes', image: 'https://cars.ua/thumb/upload/w933/h622/q80/614d98e8705f99_24750952.jpg' },
     { id: 9, firstName: 'Peter', lastName: 'Miller', age: 17, email: 'Peter-17@gmail.com', activated: true, vehicle: 'Energica', image: 'https://www.motorbiscuit.com/wp-content/uploads/2020/04/2020-Energica-Eva-EsseEsse9.jpg' },
     { id: 10, firstName: 'Adam', lastName: 'Jones', age: 25, email: 'Adam-25@gmail.com', activated: true, vehicle: 'Volkswagen', image: 'https://parkers-images.bauersecure.com/pagefiles/318288/cut-out/420x280/volkswagen-arteon-01.jpg' }
-  ]
-
-  private userIdSubj: BehaviorSubject<number> = new BehaviorSubject(null);
+  ];
 
   constructor() { }
 
@@ -29,52 +27,29 @@ export class UsersService {
     return of(this.users);
   }
 
-  defineUserId(id: number): Observable<never> {
-    this.userIdSubj.next(id);
-    return EMPTY;
+  getUserById(id: number): Observable<IUser> {
+    return this.getUsers().pipe(map(users => users.find(user => user.id == id)), delay(2000));
   }
 
   filterUsers(value: string): Observable<IUser[]> {
     return this.getUsers().pipe(
       map(users => {
-        return users.filter(user => user.firstName.toLowerCase() === value || user.lastName.toLowerCase() === value)
+        return users.filter(user => user.firstName.toLowerCase().includes(value)
+          || user.lastName.toLowerCase().includes(value))
       })
-      );
+    );
   }
 
-  getUserById(id: number): Observable<IUser> {
-    this.userIdSubj.next(id);
-    return this.userIdSubj.pipe(
-      switchMap(id => this.getUsers().pipe(
-        map(users => users.find(user => user.id == id)),
-        delay(2000),
-      )));
-  }
-
-  getUsersNextIndex(): Observable<number> {
+  getUsersNextId(): Observable<number> {
     return of(this.users.length);
   }
 
-  addNewUser(user: Observable<IUser>): Observable<Number> {
-    user.pipe(
-      map(user => this.users.push(user)),
-      first()
-      )
-      .subscribe();
-    return of(1).pipe(delay(2000));
+  addNewUser(user: IUser): Observable<number> {
+    return this.getUsers().pipe(map(users => users.push(user)), delay(2000));
   }
 
-  updateUser(updatedUser: Observable<IUser>): Observable<number> {
-    updatedUser.pipe(
-      map(newUser => {
-        const currentUser = this.users.find(user => user.id === newUser.id);
-        Object.assign(currentUser, newUser);
-      }),
-      first(),
-      delay(2000)
-    )
-      .subscribe();
-    return of(1);
+  updateUser(newUser: IUser): Observable<IUser> {
+    return this.getUserById(newUser.id).pipe(map(user => Object.assign(user, newUser)));
   }
 
   deactivateParticular(user: IUser): Observable<void> {
