@@ -5,10 +5,11 @@
     <mat-card-subtitle class="card-subtitle">{{user.age}} years</mat-card-subtitle>
   </mat-card-title-group>
   <mat-card-content>
-    <app-vehicle>
+    <p *ngIf="user.gender">Gender: {{user.gender}}</p>
+    <!-- <app-vehicle>
       <h3 user-vehicle-title>Vehicle: {{user.vehicle}}</h3>
       <div class="user-vehicle-image" [ngStyle]="{'background-image': 'url(&quot;'+user.image+'&quot;)'}"></div>
-    </app-vehicle>
+    </app-vehicle> -->
   </mat-card-content>
   <mat-card-actions>
     <button mat-stroked-button (click)="log(user)">Log</button>

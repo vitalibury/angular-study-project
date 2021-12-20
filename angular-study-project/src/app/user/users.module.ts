@@ -11,6 +11,7 @@ import {
 } from '.';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../material';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { MaterialModule } from '../material';
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
     MaterialModule
   ]
 })

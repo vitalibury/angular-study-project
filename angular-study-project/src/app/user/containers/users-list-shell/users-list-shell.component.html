@@ -8,8 +8,8 @@
   </div>
 </div>
 
-<div class="users" *ngIf="users$; else loader">
-  <ng-container  *ngFor="let user of users$ | async">
+<div class="users" *ngIf="(users$ | async) as users; else loader">
+  <ng-container  *ngFor="let user of users">
     <app-user-item [hidden]="!user.activated && !isShowDeactivated" [user]="user" (userLog)="userLog($event)" (deactivateUser)="deactivateParticularUser($event)"></app-user-item>
   </ng-container>
 </div>
@@ -17,3 +17,10 @@
 <ng-template #loader>
   <mat-spinner></mat-spinner>
 </ng-template>
+
+<!-- <mat-paginator *ngIf="usersLength | async > 10"
+              [hidePageSize]="true"
+              [length]="(users$ | async).length"
+               [pageSize]="numberItemsForPage"
+               aria-label="Select page">
+</mat-paginator> -->

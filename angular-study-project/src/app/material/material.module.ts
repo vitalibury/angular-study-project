@@ -15,6 +15,7 @@ import { FormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatRadioModule } from '@angular/material/radio';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 
 
@@ -38,7 +39,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatInputModule,
     MatDividerModule,
     MatRadioModule,
-    MatDialogModule
+    MatDialogModule,
+    MatPaginatorModule
   ]
 })
 export class MaterialModule { }
