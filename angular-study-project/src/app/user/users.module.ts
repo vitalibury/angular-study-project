@@ -4,28 +4,28 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared';
 
 import {
-  AddressesComponent,
-  AddUserComponent,
   AddUserShellComponent,
+  EditUserShellComponent,
   UsersComponent,
   UsersListShellComponent
 } from '.';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MaterialModule } from '../material';
 
 
 @NgModule({
   declarations: [
     UsersListShellComponent,
     UsersComponent,
-    AddUserComponent,
     AddUserShellComponent,
-    AddressesComponent
+    EditUserShellComponent
   ],
   imports: [
     CommonModule,
+    SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    SharedModule
+    MaterialModule
   ]
 })
 export class UsersModule { }

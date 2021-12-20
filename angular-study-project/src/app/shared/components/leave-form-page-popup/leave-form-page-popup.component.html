@@ -1,0 +1,32 @@
+<h1 mat-dialog-title>Подтверждение ухода со страницы</h1>
+<div mat-dialog-content>
+  <p>У вас есть несохраненные изменения, которые будут утреяны. Вы действительно хотите покинуть страницу?</p>
+  <ul>
+    <li *ngIf="data.firstName">
+      First name: {{data.firstName}}
+    </li>
+    <li *ngIf="data.lastName">
+      Last name: {{data.lastName}}
+    </li>
+    <li *ngIf="data.age">
+      Age: {{data.age}}
+    </li>
+    <li *ngIf="data.email">
+      Email: {{data.email}}
+    </li>
+    <li *ngIf="data.company">
+      Company: {{data.company}}
+    </li>
+    <li *ngIf="data.department">
+      Department: {{data.department}}
+    </li>
+    <li *ngIf="data.gender">
+      Gender: {{data.gender}}
+    </li>
+  </ul>
+</div>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Нет</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Да</button>
+</mat-dialog-actions>

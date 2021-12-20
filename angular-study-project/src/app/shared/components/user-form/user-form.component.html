@@ -1,4 +1,4 @@
-<mat-card class="add-user-card">
+<mat-card class="add-user-card" *ngIf="!isLoading; else spinner">
   <mat-card-title class="add-user-title"><ng-content></ng-content></mat-card-title>
   <form class="add-user-form" [formGroup]="form"> 
     
@@ -29,17 +29,7 @@
     <p class="add-user-form-section">
       <mat-form-field appearance="outline" color="primary">
         <mat-label>Email:</mat-label>
-        <input matInput type="email" formControlName="email">        
-        <!-- <mat-error *ngIf="form.get('email').hasError('required'); else secondError">Type email please</mat-error>
-        <ng-template #secondError>
-          <mat-error *ngIf="form.get('email').hasError('email'); else thirdError">Type correct email format</mat-error>
-        </ng-template>
-        <ng-template #thirdError>
-          <mat-error *ngIf="form.get('email').hasError('pattern'); else fourthError">Email should have &quot;@gmail.com&quot; domain</mat-error>
-        </ng-template>
-        <ng-template #fourthError>
-          <mat-error *ngIf="form.get('email').hasError('emailExist')">This email is already registered</mat-error>
-        </ng-template> -->
+        <input matInput type="email" formControlName="email">
         <mat-error><app-form-error [control]="form.get('email')"></app-form-error></mat-error>
       </mat-form-field>
     </p>
@@ -79,3 +69,7 @@
     </p>
   </form>
 </mat-card>
+
+<ng-template #spinner>
+  <mat-spinner [ngStyle]="{'margin': '0 auto'}"></mat-spinner>
+</ng-template>

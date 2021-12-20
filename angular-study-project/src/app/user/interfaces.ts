@@ -1,13 +1,14 @@
 export interface IUser {
-  id?: Number,
-  name: String,
-  age: Number,
-  email?: String,
+  id?: number,
+  firstName: string,
+  lastName: string,
+  age: number,
+  email?: string,
   activated: Boolean,
-  vehicle?: String,
-  image?: String,
-  company?: String,
-  department?: String,
-  gender?: String,
-  addresses?: Object
+  vehicle?: string,
+  image?: string,
+  company?: string,
+  department?: string,
+  gender?: string,
+  addresses?: object
 }
