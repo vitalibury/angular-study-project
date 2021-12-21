@@ -1,12 +1,12 @@
-import { Component, OnDestroy, OnInit, ViewChildren } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ViewChildren } from '@angular/core';
 
 import { IUser, UsersService } from '../..';
 
 import { UserItemComponent } from 'src/app/shared';
-import { debounceTime, distinctUntilChanged, EMPTY, first, map, Observable, of, Subject, Subscription, switchMap, tap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, first, map, Observable, of, Subject, Subscription, switchMap, tap } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
 import { HttpService } from 'src/app/services/http.service';
-import { TOUCH_BUFFER_MS } from '@angular/cdk/a11y/input-modality/input-modality-detector';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-users-list-shell',
@@ -20,8 +20,9 @@ export class UsersListShellComponent implements OnInit, OnDestroy {
   searchForm: FormGroup;
   users: IUser[];
   isShowDeactivated: Boolean = true;
+  usersLength: number;
   users$: Observable<IUser[]>;
-  usersLength$: Observable<number>;
+  filteredUsers$: Observable<IUser[]>;
   usersForPage$: Observable<IUser[]>;
   pageNumberSubj: Subject<number> = new Subject();
   numberItemsForPage = 10;
@@ -29,36 +30,61 @@ export class UsersListShellComponent implements OnInit, OnDestroy {
   @ViewChildren(UserItemComponent)
   private userCards: UserItemComponent[];
 
+  @ViewChild('paginator', { static: true }) paginator: MatPaginator;
+
   constructor(private usersService: UsersService, private httpService: HttpService) { }
 
   ngOnInit(): void {
-    this.users$ = this.httpService.getUsers().pipe(tap((users) => this.usersLength$ = of(users.length)));
-    this.usersForPage$ = this.pageNumberSubj.pipe(
-      switchMap((page) => this.users$.pipe(map(users => {
-        const startIndex = users.length / this.numberItemsForPage * page;
-        const lastIndex = startIndex + this.numberItemsForPage;
-        return users.slice(startIndex, lastIndex);
-      })))
-    );
     this.searchForm = new FormGroup({
-      searchField: new FormControl('')
+      searchField: new FormControl()
     });
 
-    this.subscription.add(this.searchForm.get('searchField').valueChanges.pipe(
+    this.httpService.getUsers().pipe(
+      tap((users) => this.usersLength = users.length),
+      first()
+    ).subscribe(users => {
+      this.users$ = of(users);
+      this.searchForm.get('searchField').setValue(''); // и почему если передать значение пустой строки при инициализации это поля формы, а не здесь, то все перестаёт отрабатывать даже при изменении значения в поле поиска
+    });
+
+    this.filteredUsers$ = this.searchForm.get('searchField').valueChanges.pipe(
       debounceTime(500),
       distinctUntilChanged(),
-      tap(value => {
-        if (value) {
-          this.users$ = this.usersService.filterUsers(value.trim().toLowerCase());
-        } else {
-          this.users$ = this.usersService.getUsers() as Observable<IUser[]>;
-        }
+      switchMap(value => this.usersService.filterUsers(this.users$, value)),
+      tap(users => {
+        this.filteredUsers$ = of(users);
+        this.setPageNumber(0);
+        this.paginator.firstPage();
+        this.usersLength = users.length;
       })
-    ).subscribe());
+    );
+
+    this.subscription.add(this.filteredUsers$.subscribe());
+
+    this.usersForPage$ = this.pageNumberSubj.pipe(
+      switchMap((page) => {
+        console.log('page: ', page)
+        return this.filteredUsers$.pipe(map(users => {
+          const startIndex = page * this.numberItemsForPage;
+          const currentPageUsersNumber = startIndex + 10 + 1;
+          if (users.length >= currentPageUsersNumber) {
+            return users.slice(startIndex, startIndex + 10);
+          } else {
+            return users.slice(startIndex, users.length);
+          }
+        }))
+      })
+    );
+    
   }
+
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  setPageNumber(index: number): void {
+    this.pageNumberSubj.next(index);
   }
 
   showHideDeactivated(): void {
