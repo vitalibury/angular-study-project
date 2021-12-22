@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { delay, map, Observable, of } from 'rxjs';
+import { delay, exhaustMap, map, Observable, of } from 'rxjs';
 import { IUser } from '.';
 
 @Injectable({
@@ -31,13 +31,17 @@ export class UsersService {
     return this.getUsers().pipe(map(users => users.find(user => user.id == id)), delay(2000));
   }
 
-  filterUsers(value: string): Observable<IUser[]> {
-    return this.getUsers().pipe(
-      map(users => {
-        return users.filter(user => user.firstName.toLowerCase().includes(value)
-          || user.lastName.toLowerCase().includes(value))
-      })
-    );
+  filterUsers(users$: Observable<IUser[]>, value: string): Observable<IUser[]> {
+    if (value) {
+      return users$.pipe(
+        map(users => {
+          return users.filter(user => user.firstName.toLowerCase().includes(value.trim().toLowerCase())
+            || user.lastName.toLowerCase().includes(value.trim().toLowerCase()))
+        })
+      );
+    } else {
+      return users$;
+    }
   }
 
   getUsersNextId(): Observable<number> {

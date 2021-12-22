@@ -7,9 +7,8 @@
     </mat-form-field>
   </div>
 </div>
-
-<div class="users" *ngIf="users$; else loader">
-  <ng-container  *ngFor="let user of users$ | async">
+<div class="users" *ngIf="(usersForPage$ | async) as users; else loader">
+  <ng-container  *ngFor="let user of users">
     <app-user-item [hidden]="!user.activated && !isShowDeactivated" [user]="user" (userLog)="userLog($event)" (deactivateUser)="deactivateParticularUser($event)"></app-user-item>
   </ng-container>
 </div>
@@ -17,3 +16,11 @@
 <ng-template #loader>
   <mat-spinner></mat-spinner>
 </ng-template>
+
+<mat-paginator class="paginator" #paginator [hidden]="usersLength < 11"
+              [hidePageSize]="true"
+              [length]="usersLength"
+               [pageSize]="numberItemsForPage"
+               (page)="setPageNumber($event.pageIndex)"
+               aria-label="Select page">
+</mat-paginator>
