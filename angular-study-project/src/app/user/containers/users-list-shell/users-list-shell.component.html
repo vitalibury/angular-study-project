@@ -17,7 +17,7 @@
   <mat-spinner></mat-spinner>
 </ng-template>
 
-<mat-paginator #paginator [hidden]="usersLength < 11"
+<mat-paginator class="paginator" #paginator [hidden]="usersLength < 11"
               [hidePageSize]="true"
               [length]="usersLength"
                [pageSize]="numberItemsForPage"

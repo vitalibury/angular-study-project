@@ -63,14 +63,13 @@ export class UsersListShellComponent implements OnInit, OnDestroy {
 
     this.usersForPage$ = this.pageNumberSubj.pipe(
       switchMap((page) => {
-        console.log('page: ', page)
         return this.filteredUsers$.pipe(map(users => {
           const startIndex = page * this.numberItemsForPage;
-          const currentPageUsersNumber = startIndex + 10 + 1;
-          if (users.length >= currentPageUsersNumber) {
-            return users.slice(startIndex, startIndex + 10);
-          } else {
+          const currentPageLastUserId = startIndex + 9;
+          if (users.length <= currentPageLastUserId + 1) {
             return users.slice(startIndex, users.length);
+          } else {
+            return users.slice(startIndex, startIndex + 10);
           }
         }))
       })
