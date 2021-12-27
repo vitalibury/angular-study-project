@@ -16,12 +16,12 @@ import { IUser, UsersService } from '../..';
 export class AddUserShellComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
 
   @ViewChild(UserFormComponent)
+
   private formComponent: UserFormComponent;
-
   newUserSubj: Subject<IUser> = new Subject();
-
   newUserNextId: number;
   formTitle = 'Добавление нового пользователя';
+  isSubmitted = false;
 
   private subscriptions: Subscription = new Subscription();
 
@@ -37,7 +37,10 @@ export class AddUserShellComponent implements OnInit, OnDestroy, ComponentCanDea
     this.subscriptions.add(this.newUserSubj.pipe(
       map((user) => this.createNewUserObject(user)),
       exhaustMap(user => this.usersService.addNewUser(user))
-    ).subscribe(() => this.goToMainPage()));
+    ).subscribe(() => {
+      this.isSubmitted = false;
+      this.goToMainPage();
+    }));
   }
 
   ngOnDestroy(): void {
@@ -64,6 +67,7 @@ export class AddUserShellComponent implements OnInit, OnDestroy, ComponentCanDea
     if (this.formComponent.form.invalid) {
       this.formComponent.markFormAsChecked();
     } else {
+      this.isSubmitted = true;
       this.formComponent.form.markAsPristine();
       this.newUserSubj.next(this.formComponent.form.value);
     }

@@ -21,10 +21,6 @@ export class FormErrorComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.defineErrorMessage(this.control);
-    // this.subscription.add(this.control.valueChanges.subscribe(() => {
-    //   this.defineErrorMessage(this.control);
-    // }
-    // ));
     this.subscription.add(this.control.statusChanges.subscribe(() => {
       this.defineErrorMessage(this.control);
     }

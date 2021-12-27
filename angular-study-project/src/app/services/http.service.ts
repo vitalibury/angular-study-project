@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { delay, map, Observable, of, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { INewUser } from '../auth/auth.interfaces';
+import { users } from '../auth/registered-users';
 import { IUser } from '../user/interfaces';
 
 @Injectable({
@@ -32,8 +34,22 @@ export class HttpService {
     );
   }
 
-  addUser(user: IUser): Observable<any> {
+  addUser(user: IUser): Observable<any> { // Post request example
     return this.http.post(`${environment.apiUrl}/users`, user);
+  }
+
+  registerUser(user: INewUser): Observable<INewUser> {
+    Object.assign(users, {[user.login]: {login: user.login, password: user.password}});
+    const registeredUser = users[user.login];
+    return of(registeredUser).pipe(delay(1000));
+  }
+
+  signIn(user: INewUser): Observable<any> | Observable<never> {
+    const existingUser = users[user.login];
+    if (existingUser) {
+      return of(existingUser).pipe(delay(1500));
+    }
+    return throwError(() => new Error('Such user does not exist! Register please!')).pipe(delay(15000));
   }
 
 }
