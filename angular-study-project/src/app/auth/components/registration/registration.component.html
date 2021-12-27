@@ -1,0 +1,32 @@
+<mat-card class="registration-card">
+  <mat-card-title>Регистрация нового пользователя</mat-card-title>
+  <form [formGroup]="form" class="registration-form">
+    <p class="form-login">
+      <mat-form-field appearance="outline" color="primary">
+        <mat-label>Введите логин:</mat-label>
+        <input matInput type="text" placeholder="Andrew" formControlName="login">
+        <mat-error><app-form-error [control]="form.get('login')" ></app-form-error></mat-error>
+      </mat-form-field>
+    </p>
+    <div formGroupName="passwords">
+      <p class="form-password">
+        <mat-form-field appearance="outline" color="primary">
+          <mat-label>Введите пароль:</mat-label>
+          <input matInput type="password" placeholder="123456Abcd" formControlName="password">
+          <mat-error><app-form-error [control]="form.get('passwords.password')"></app-form-error></mat-error>
+        </mat-form-field>
+      </p>
+      
+      <p class="form-password-confirm">
+        <mat-form-field appearance="outline" color="primary">
+          <mat-label>Повторите пароль:</mat-label>
+          <input matInput type="password" placeholder="123456Abcd" formControlName="passwordConfirm">
+          <mat-error><app-form-error [control]="form.get('passwords.passwordConfirm')"></app-form-error></mat-error>
+        </mat-form-field>
+      </p>
+    </div>
+
+    <button mat-raised-button color="primary" (click)="submit()" [disabled]="registrationBtnDisabled">Зарегистрировать</button>
+  </form>
+
+</mat-card>

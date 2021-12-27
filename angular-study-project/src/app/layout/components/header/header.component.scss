@@ -1,6 +1,45 @@
 .first-component-header {
  margin-bottom: 1rem;
 
+ .header-title-row {
+   display: flex;
+   flex-direction: row;
+
+   .title {
+     flex-grow: 1;
+   }
+
+   .auth {
+     display: flex;
+     flex-direction: row;
+     align-items: center;
+     font-size: 1rem;
+     line-height: 1rem;
+
+     &-user-name {
+      color: chartreuse;
+     }
+
+     &-login,
+     &-logout {
+       margin-left: 0.5rem;
+       cursor: pointer;
+     }
+
+     &-login:hover,
+     &-logout:hover {
+       margin-left: 0.5rem;
+       color: rgb(223, 255, 190);
+       transition: 0.3s;
+     }
+
+     &-login:active,
+     &-logout:active {
+       color: chartreuse;
+     }
+   }
+ }
+
   .nav-links {
     display: flex;
 

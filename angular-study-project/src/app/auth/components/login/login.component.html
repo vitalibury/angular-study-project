@@ -1,0 +1,25 @@
+<mat-card class="login-card">
+  <mat-card-title>Авторизация пользователя</mat-card-title>
+  <div [formGroup]="form" class="login-form">
+    <small class="error-message">{{loginErrorMessage}}</small>
+    <p class="form-login">
+      <mat-form-field appearance="outline" color="primary">
+        <mat-label>Введите логин:</mat-label>
+        <input matInput type="text" placeholder="Andrew" formControlName="login">
+        <mat-error><app-form-error [control]="form.get('login')" ></app-form-error></mat-error>
+      </mat-form-field>
+    </p>
+
+    <p class="form-password">
+      <mat-form-field appearance="outline" color="primary">
+        <mat-label>Введите пароль:</mat-label>
+        <input matInput type="password" placeholder="123456Abcd" formControlName="password">
+        <mat-error><app-form-error [control]="form.get('password')" ></app-form-error></mat-error>
+      </mat-form-field>
+    </p>
+
+    <button mat-raised-button color="primary" (click)="submit()" [disabled]="loginBtnDisabled">Войти</button>
+    <a routerLink="/auth/registration" class="registration-link">Зарегистрироваться</a>
+  </div>
+
+</mat-card>

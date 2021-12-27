@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { SharedModule } from '../shared';
 
 import {
   AddUserShellComponent,
@@ -9,9 +10,8 @@ import {
   UsersComponent,
   UsersListShellComponent
 } from '.';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared';
 import { MaterialModule } from '../material';
-import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({

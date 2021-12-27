@@ -5,11 +5,12 @@ const errorsConfig = {
   minlength: 'Length should be greater or equal',
   pattern: 'Domain should be',
   emailExist: 'This email is already registered',
-  email: 'Type correct email'
+  email: 'Type correct email',
+  equalPasswords: 'Passwords are not equal'
 }
 
 export const setError = (error: String, errors: Object): String => {
-  if (error === 'email' || error === 'emailExist') {
+  if (error === 'email' || error === 'emailExist' || error === 'equalPasswords') {
     return selectConfigMessage(error);
   }
   if (error === 'min') {

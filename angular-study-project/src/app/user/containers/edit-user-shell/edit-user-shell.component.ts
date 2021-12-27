@@ -24,7 +24,8 @@ export class EditUserShellComponent implements OnInit, OnDestroy, ComponentCanDe
   user$: Observable<IUser>;
 
   formTitle = 'Редактирование существующего пользователя';
-  formIsDirty = false;
+  formIsDirty = false;  
+  isSubmitted = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -38,7 +39,10 @@ export class EditUserShellComponent implements OnInit, OnDestroy, ComponentCanDe
     this.subscription.add(this.newUserSubj.pipe(
       exhaustMap(newUser => this.user$.pipe(map(user => ({...user, ...newUser})))),
       exhaustMap(user => this.usersService.updateUser(user))
-    ).subscribe(() => this.goToMainPage()));
+    ).subscribe(() => {
+      this.isSubmitted = false;
+      this.goToMainPage();
+    }));
   }
 
   ngOnDestroy(): void {
@@ -63,6 +67,7 @@ export class EditUserShellComponent implements OnInit, OnDestroy, ComponentCanDe
     if (this.formComponent.form.invalid) {
       this.formComponent.markFormAsChecked();
     } else {
+      this.isSubmitted = true;
       this.formComponent.form.markAsPristine();
       this.newUserSubj.next(this.formComponent.form.value);
     }
