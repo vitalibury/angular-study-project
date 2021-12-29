@@ -1,0 +1,14 @@
+<mat-list *ngIf="user">
+  <mat-list-item>
+    <mat-icon mat-list-icon>person</mat-icon>
+    <div mat-line> {{user.firstName | fullName:user.lastName}} </div>
+  </mat-list-item>
+  <mat-list-item>
+    <mat-icon mat-list-icon>looks_two</mat-icon>
+    <div mat-line> {{user.age | years}} </div>
+  </mat-list-item>
+  <mat-list-item>
+    <mat-icon mat-list-icon>male</mat-icon>
+    <div mat-line> {{user.gender}} </div>
+  </mat-list-item>
+</mat-list>

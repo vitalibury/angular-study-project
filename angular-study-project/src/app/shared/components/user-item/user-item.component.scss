@@ -25,5 +25,11 @@
     background-repeat: no-repeat;
   }
 
+  .mat-card-actions {
+    .mat-stroked-button {
+      margin: 0 4px;
+    }
+  }
+
 }
 

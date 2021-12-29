@@ -16,6 +16,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatRadioModule } from '@angular/material/radio';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatTabsModule} from '@angular/material/tabs';
 
 
 
@@ -40,7 +41,8 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatDividerModule,
     MatRadioModule,
     MatDialogModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatTabsModule
   ]
 })
 export class MaterialModule { }

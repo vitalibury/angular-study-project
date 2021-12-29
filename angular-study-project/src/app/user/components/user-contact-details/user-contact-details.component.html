@@ -1,0 +1,14 @@
+<mat-list *ngIf="user">
+  <mat-list-item>
+    <mat-icon mat-list-icon>alternate_email</mat-icon>
+    <div mat-line> {{user.email}} </div>
+  </mat-list-item>
+  <mat-list-item>
+    <mat-icon mat-list-icon>mail</mat-icon>
+    <div mat-line> {{user.addresses[0].zip}} </div>
+  </mat-list-item>
+  <mat-list-item>
+    <mat-icon mat-list-icon>phone</mat-icon>
+    <div mat-line> {{user.phone | phoneFormat}} </div>
+  </mat-list-item>
+</mat-list>

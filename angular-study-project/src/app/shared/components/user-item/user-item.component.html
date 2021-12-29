@@ -1,8 +1,8 @@
 <mat-card class="user-card">
   <mat-card-subtitle class="activated" [ngStyle]="{'color': user.activated ? 'lightgreen' : 'white'}">{{user.activated ? 'Active' : 'Non-Active'}}</mat-card-subtitle>
   <mat-card-title-group>
-    <mat-card-title>{{user.firstName}} {{user.lastName}}</mat-card-title>
-    <mat-card-subtitle class="card-subtitle">{{user.age}} years</mat-card-subtitle>
+    <mat-card-title>{{user.firstName | fullName:user.lastName}}</mat-card-title>
+    <mat-card-subtitle class="card-subtitle">{{user.age | years}}</mat-card-subtitle>
   </mat-card-title-group>
   <mat-card-content>
     <p *ngIf="user.gender">Gender: {{user.gender}}</p>
@@ -12,9 +12,10 @@
     </app-vehicle> -->
   </mat-card-content>
   <mat-card-actions>
-    <button mat-stroked-button (click)="log(user)">Log</button>
+    <!-- <button mat-stroked-button (click)="log(user)">Log</button> -->
     <button mat-stroked-button (click)="goToEditPage()">Edit</button>
     <button mat-stroked-button *ngIf="user.activated" (click)="deactivate(user)">Deactivate</button>
+    <button mat-stroked-button (click)="goToDetailsPage()">Details</button>
   </mat-card-actions>
 </mat-card>
 <app-vehicle></app-vehicle>

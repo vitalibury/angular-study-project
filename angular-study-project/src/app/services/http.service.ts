@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { delay, map, Observable, of, throwError } from 'rxjs';
+import { delay, dematerialize, map, materialize, Observable, of, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { INewUser } from '../auth/auth.interfaces';
 import { users } from '../auth/registered-users';
@@ -14,11 +14,12 @@ export class HttpService {
   constructor(private http: HttpClient) { }
 
   getUsers(): Observable<IUser[]> {
-    return this.http.get(`${environment.apiUrl}/?inc=gender,name,dob,email,id,location&seed=foobar&results=100`).pipe(
+    return this.http.get(`${environment.apiUrl}/?seed=foobar&results=100`).pipe(
       map((response: any) => {
-        return response.results.map(user => {
+        console.log(response)
+        return response.results.map((user, index: number) => {
           return {
-            id: user.id.value,
+            id: index,
             firstName: user.name.first,
             lastName: user.name.last,
             age: user.dob.age,
@@ -27,11 +28,20 @@ export class HttpService {
             activated: true,
             addresses: [
               {address: user.location.street.name, city: user.location.city, zip: user.location.postcode}
-            ]
+            ],
+            company: index % 2 === 0 ? "ISSoft" : "Coherent Solutions",
+            phone: user.phone
           }
         });
       })
     );
+  }
+
+  getUserById(id: number): Observable<IUser> {
+    return this.getUsers().pipe(
+      map(users => users.filter(user => user.id == id)),
+      map(userArr => userArr[0])
+    )
   }
 
   addUser(user: IUser): Observable<any> { // Post request example
@@ -47,9 +57,12 @@ export class HttpService {
   signIn(user: INewUser): Observable<any> | Observable<never> {
     const existingUser = users[user.login];
     if (existingUser) {
-      return of(existingUser).pipe(delay(1500));
+      if (existingUser.password === user.password) {
+        return of(existingUser).pipe(delay(1500));
+      }
+      return  throwError(() => new Error('Invalid password!')).pipe(materialize(), delay(1500), dematerialize());
     }
-    return throwError(() => new Error('Such user does not exist! Register please!')).pipe(delay(15000));
+    return throwError(() => new Error('Such user does not exist! Register please!')).pipe(materialize(), delay(1500), dematerialize());
   }
 
 }
