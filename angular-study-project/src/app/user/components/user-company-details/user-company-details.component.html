@@ -1,0 +1,10 @@
+<mat-list *ngIf="user">
+  <mat-list-item>
+    <mat-icon mat-list-icon>business</mat-icon>
+    <div mat-line> {{user.company}} </div>
+  </mat-list-item>
+  <mat-list-item>
+    <mat-icon mat-list-icon>place</mat-icon>
+    <div mat-line> {{user.addresses[0].city}}, {{user.addresses[0].address}} </div>
+  </mat-list-item>
+</mat-list>

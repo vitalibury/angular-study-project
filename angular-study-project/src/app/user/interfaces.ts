@@ -10,5 +10,6 @@ export interface IUser {
   company?: string,
   department?: string,
   gender?: string,
-  addresses?: object
+  addresses?,
+  phone?
 }

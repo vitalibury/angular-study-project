@@ -12,6 +12,9 @@ import {
 } from '.';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LeaveFormPagePopupComponent } from './components/leave-form-page-popup/leave-form-page-popup.component';
+import { FullNamePipe } from './pipes/full-name.pipe';
+import { PhoneFormatPipe } from './pipes/phone-format.pipe';
+import { YearsPipe } from './pipes/years.pipe';
 
 
 
@@ -22,7 +25,10 @@ import { LeaveFormPagePopupComponent } from './components/leave-form-page-popup/
     AddressesComponent,
     VehicleComponent,
     FormErrorComponent,
-    LeaveFormPagePopupComponent
+    LeaveFormPagePopupComponent,
+    FullNamePipe,
+    PhoneFormatPipe,
+    YearsPipe
   ],
   imports: [
     CommonModule,
@@ -34,7 +40,10 @@ import { LeaveFormPagePopupComponent } from './components/leave-form-page-popup/
     UserItemComponent,
     UserFormComponent,
     AddressesComponent,
-    FormErrorComponent
+    FormErrorComponent,
+    FullNamePipe,
+    PhoneFormatPipe,
+    YearsPipe
   ]
 })
 export class SharedModule { }

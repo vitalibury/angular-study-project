@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
-import { exhaustMap, map, Observable, Subject, Subscription } from 'rxjs';
+import { ActivatedRoute, CanDeactivate, Router } from '@angular/router';
+import { exhaustMap, finalize, map, Observable, Subject, Subscription } from 'rxjs';
 import { UserFormComponent } from 'src/app/shared';
 import { LeaveFormPagePopupComponent } from 'src/app/shared/components/leave-form-page-popup/leave-form-page-popup.component';
 import { ComponentCanDeactivate } from 'src/app/shared/interfaces/component-can-deactivate';
@@ -13,11 +13,11 @@ import { IUser, UsersService } from '../..';
   styleUrls: ['./add-user-shell.component.scss']
 })
 
-export class AddUserShellComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
+export class AddUserShellComponent implements OnInit, OnDestroy, CanDeactivate<ComponentCanDeactivate> {
 
   @ViewChild(UserFormComponent)
-
   private formComponent: UserFormComponent;
+  
   newUserSubj: Subject<IUser> = new Subject();
   newUserNextId: number;
   formTitle = 'Добавление нового пользователя';
@@ -36,9 +36,9 @@ export class AddUserShellComponent implements OnInit, OnDestroy, ComponentCanDea
     this.subscriptions.add(this.usersService.getUsersNextId().subscribe(id => this.newUserNextId = id));
     this.subscriptions.add(this.newUserSubj.pipe(
       map((user) => this.createNewUserObject(user)),
-      exhaustMap(user => this.usersService.addNewUser(user))
+      exhaustMap(user => this.usersService.addNewUser(user)),
+      finalize(() => this.isSubmitted = false)
     ).subscribe(() => {
-      this.isSubmitted = false;
       this.goToMainPage();
     }));
   }
@@ -48,16 +48,15 @@ export class AddUserShellComponent implements OnInit, OnDestroy, ComponentCanDea
   }
 
   canDeactivate(): boolean | Observable<boolean> {
-    return !this.formComponent.form.dirty;
+    if (this.formComponent.form.dirty) {
+      const dialogRef = this.dialog.open(LeaveFormPagePopupComponent, {
+        data: this.formComponent.changedFields,
+        width: '600px'
+      });
+      return dialogRef.afterClosed()
+    }
+    return true;
   };
-
-  openDialog(): boolean | Observable<boolean> {
-    const dialogRef = this.dialog.open(LeaveFormPagePopupComponent, {
-      data: this.formComponent.changedFields,
-      width: '600px'
-    });
-    return dialogRef.afterClosed()
-  }
 
   goToMainPage(): void {
     this.router.navigate(['']);

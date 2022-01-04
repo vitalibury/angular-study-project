@@ -35,4 +35,8 @@ export class UserItemComponent implements OnInit {
     this.router.navigate(['/edit-user', this.user.id])
   }
 
+  goToDetailsPage() {
+    this.router.navigate(['/details', this.user.id])
+  }
+
 }
