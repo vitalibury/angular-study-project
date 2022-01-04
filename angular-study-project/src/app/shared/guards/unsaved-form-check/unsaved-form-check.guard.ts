@@ -1,22 +1,17 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AddUserShellComponent, EditUserShellComponent } from 'src/app/user';
+import { ComponentCanDeactivate } from '../../interfaces/component-can-deactivate';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class UnsavedFormCheckGuard implements CanDeactivate<EditUserShellComponent | AddUserShellComponent> {
+@Injectable()
+export class UnsavedFormCheckGuard implements CanDeactivate<ComponentCanDeactivate> {
 
   canDeactivate(
-    component: EditUserShellComponent | AddUserShellComponent,
+    component: ComponentCanDeactivate,
     currentRoute: ActivatedRouteSnapshot,
     currentState: RouterStateSnapshot,
     nextState?: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (component.canDeactivate()) {
-      return true;
-    }       
-      return component.openDialog();
+    return component.canDeactivate();
   }
   
 }

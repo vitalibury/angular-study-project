@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { exhaustMap, map, Observable, Subject, Subscription } from 'rxjs';
+import { exhaustMap, finalize, map, Observable, Subject, Subscription } from 'rxjs';
 import { UserFormComponent } from 'src/app/shared';
 import { LeaveFormPagePopupComponent } from 'src/app/shared/components/leave-form-page-popup/leave-form-page-popup.component';
 import { ComponentCanDeactivate } from 'src/app/shared/interfaces/component-can-deactivate';
@@ -38,9 +38,9 @@ export class EditUserShellComponent implements OnInit, OnDestroy, ComponentCanDe
     this.user$ = this.usersService.getUserById(this.route.snapshot.params['id']);
     this.subscription.add(this.newUserSubj.pipe(
       exhaustMap(newUser => this.user$.pipe(map(user => ({...user, ...newUser})))),
-      exhaustMap(user => this.usersService.updateUser(user))
+      exhaustMap(user => this.usersService.updateUser(user)),
+      finalize(() => this.isSubmitted = false)
     ).subscribe(() => {
-      this.isSubmitted = false;
       this.goToMainPage();
     }));
   }
@@ -50,17 +50,15 @@ export class EditUserShellComponent implements OnInit, OnDestroy, ComponentCanDe
   }
 
   canDeactivate(): boolean | Observable<boolean> {
-    return !this.formComponent.form.dirty;
+    if (this.formComponent.form.dirty) {
+      const dialogRef = this.dialog.open(LeaveFormPagePopupComponent, {
+        data: this.formComponent.changedFields,
+        width: '600px'
+      });
+      return dialogRef.afterClosed()
+    }
+    return true;
   };
-
-  openDialog(): boolean | Observable<boolean> {
-    const dialogRef = this.dialog.open(LeaveFormPagePopupComponent, {
-      data: this.formComponent.changedFields,
-      width: '600px'
-    });
-    return dialogRef.afterClosed()
-  }
-
 
   submitUserForm(): void {
     this.formIsDirty = false;

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, take } from 'rxjs';
 import { HttpService } from '../services/http.service';
-import { constants } from '../shared/constants';
+import { SessionStorage } from '../services/local-storage.service';
 import { INewUser } from './auth.interfaces';
 
 @Injectable({
@@ -14,16 +14,14 @@ export class AuthService {
   private authenticated = this.authenticateFromSessionStorage();
   authenticatedHow$ = this.authenticatedHowSubj.asObservable();
 
-  constructor(private router: Router, private http: HttpService) {
-    router.events.subscribe(event => this.routerLogger(event))
-  }
+  constructor(private router: Router, private http: HttpService, private storage: SessionStorage) {}
 
   get isAuthenticated() {
     return this.authenticated;
   }
 
   authenticateFromSessionStorage(): boolean {
-    const storageUser = sessionStorage.getItem(constants.STUDY_PROJECT_STORAGE_VAR);
+    const storageUser = this.storage.getStorageUser();
     if (storageUser) {
       const userFromString = JSON.parse(storageUser);
       this.http.registerUser(userFromString).pipe(
@@ -34,24 +32,15 @@ export class AuthService {
     return false;
   }
 
-  setStorageUser(storageUser: INewUser): void {
-    const userString = JSON.stringify(storageUser);
-    sessionStorage.setItem(constants.STUDY_PROJECT_STORAGE_VAR, userString);
-  }
-
-  deleteStorageUser() {
-    sessionStorage.clear();
-  }
-
   setAuthentication(user: INewUser) {
     if (user) {
       this.authenticated = true;
       this.authenticatedHowSubj.next(user.login);
-      this.setStorageUser(user);
+      this.storage.setStorageUser(user);
     } else {
       this.authenticated = false;
       this.authenticatedHowSubj.next('');
-      this.deleteStorageUser();
+      this.storage.deleteStorageUser();
     }
   }
 
@@ -72,12 +61,4 @@ export class AuthService {
   //   console.log(error);
   // }
 
-  routerLogger(event): void {
-    if (event instanceof NavigationEnd) {
-      console.log('NavigationEnd: ', event.url);
-    }
-    if (event instanceof NavigationStart) {
-      console.log('NavigationStart: ', event.url);
-    }
-  }
 }

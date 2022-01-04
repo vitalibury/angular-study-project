@@ -16,7 +16,7 @@ export class HttpService {
   getUsers(): Observable<IUser[]> {
     return this.http.get(`${environment.apiUrl}/?seed=foobar&results=100`).pipe(
       map((response: any) => {
-        console.log(response)
+        // console.log(response);
         return response.results.map((user, index: number) => {
           return {
             id: index,

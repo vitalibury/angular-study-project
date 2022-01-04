@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+// import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
@@ -20,14 +20,15 @@ import { RouterModule } from '@angular/router';
 import { UserCompanyDetailsShellComponent } from './containers/user-company-details-shell/user-company-details-shell.component';
 import { UserContactDetailsShellComponent } from './containers/user-contact-details-shell/user-contact-details-shell.component';
 import { UserPersonalDetailsShellComponent } from './containers/user-personal-details-shell/user-personal-details-shell.component';
+import { UserRoutingModule } from './user-routing.module';
 
 
 @NgModule({
   declarations: [
     UsersListShellComponent,
     UsersComponent,
-    AddUserShellComponent,
     EditUserShellComponent,
+    AddUserShellComponent,
     UserDetailsShellComponent,
     UserCompanyDetailsComponent,
     UserPersonalDetailsComponent,
@@ -41,9 +42,10 @@ import { UserPersonalDetailsShellComponent } from './containers/user-personal-de
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule,
+    // HttpClientModule,
     RouterModule,
-    MaterialModule
+    MaterialModule,
+    UserRoutingModule
   ]
 })
 export class UsersModule { }

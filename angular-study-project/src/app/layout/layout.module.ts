@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 import { MaterialModule } from '../material';
 
 import { HeaderComponent, MainLayoutComponent } from '.';
-import { UsersModule } from '../user/users.module';
 import { RxJsModule } from '../rxjs/rxjs.module';
 
 
@@ -18,8 +18,8 @@ import { RxJsModule } from '../rxjs/rxjs.module';
   imports: [
     CommonModule,
     RouterModule,
+    HttpClientModule,
     MaterialModule,
-    UsersModule,
     RxJsModule
   ]
 })

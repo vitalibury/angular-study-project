@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LoggerService } from './services/logger.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'angular-study-project';
+
+  constructor(private logger: LoggerService) {}
 }
