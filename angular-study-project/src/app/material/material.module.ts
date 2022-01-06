@@ -14,9 +14,11 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatRadioModule } from '@angular/material/radio';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatPaginatorModule} from '@angular/material/paginator';
-import {MatTabsModule} from '@angular/material/tabs';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatTableModule } from '@angular/material/table';
 
 
 
@@ -42,7 +44,9 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatRadioModule,
     MatDialogModule,
     MatPaginatorModule,
-    MatTabsModule
+    MatSortModule,
+    MatTabsModule,
+    MatTableModule,
   ]
 })
 export class MaterialModule { }

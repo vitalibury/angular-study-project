@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { AddUserShellComponent, EditUserShellComponent, UsersListShellComponent } from '.';
 import { AuthGuard } from '../auth/auth.guard';
 import { UnsavedFormCheckGuard } from '../shared/guards/unsaved-form-check/unsaved-form-check.guard';
+import { ClientTableShellComponent } from './containers/client-table-shell/client-table-shell.component';
+import { ServerTableShellComponent } from './containers/server-table-shell/server-table-shell.component';
 import { UserCompanyDetailsShellComponent } from './containers/user-company-details-shell/user-company-details-shell.component';
 import { UserContactDetailsShellComponent } from './containers/user-contact-details-shell/user-contact-details-shell.component';
 import { UserDetailsShellComponent } from './containers/user-details-shell/user-details-shell.component';
@@ -18,7 +20,9 @@ export const userRoutes: Routes = [
     { path: 'company', component: UserCompanyDetailsShellComponent },
     { path: 'personal', component: UserPersonalDetailsShellComponent },
     { path: 'contact', component: UserContactDetailsShellComponent },
-  ] }
+  ] },
+  { path: 'client-table', component: ClientTableShellComponent },
+  { path: 'server-table', component: ServerTableShellComponent }
 ];
 
 @NgModule({

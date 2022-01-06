@@ -1,0 +1,10 @@
+<app-server-table [users]="users$ | async" [isLoading$]="isLoading$" ></app-server-table>
+
+  
+<mat-paginator #paginator
+  aria-label="Select page"
+  [hidePageSize]="true"
+  [length]="usersCount"
+   [pageSize]="pageUsersCount"
+   (page)="setPageNumber($event.pageIndex)"
+></mat-paginator>
