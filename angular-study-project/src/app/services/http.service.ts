@@ -23,15 +23,6 @@ export class HttpService {
     );
   }
 
-  getSpecificUsersPage(page: number) {
-    return this.http.get(`${environment.apiUrl}/?seed=foobar&results=${constants.SERVER_TABLE_PAGE_USERS_COUNT}&page=${page}`).pipe(
-      map((response: any) => {
-        // console.log(response);
-        return response.results.map((user: any, index: number) => this.prepareUserObj(user, index));
-      })
-    )
-  }
-
   prepareUserObj(user: any, index: number) {
     return {
       id: index,

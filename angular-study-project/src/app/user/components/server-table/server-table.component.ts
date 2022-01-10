@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Observable } from 'rxjs';
+import { merge } from 'rxjs';
 import { IUser } from '../..';
 
 @Component({
@@ -10,23 +11,43 @@ import { IUser } from '../..';
   styleUrls: ['./server-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ServerTableComponent implements OnChanges {
+export class ServerTableComponent implements OnInit, OnChanges, AfterViewInit {
 
-  displayedColumns: string[] = ['№', 'firstName', 'email', 'age', 'addresses', 'company'];
+  displayedColumns: string[] = ['#', 'firstName', 'email', 'age', 'addresses', 'company'];
+  pageSizeOptions: number[] = [10, 20];
   dataSource: MatTableDataSource<IUser>;
 
   @Input() users: IUser[];
-  @Input() isLoading$: Observable<boolean>;
+  @Input() isLoading: boolean;
+  @Input() usersLength: number;
+  @Output() onPageChanged = new EventEmitter();
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor() { }
+  ngOnInit(): void {
+    this.dataSource = new MatTableDataSource();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.users) {
-      this.dataSource = new MatTableDataSource(this.users);
-      if (!this.dataSource.sort) {
-        this.dataSource.sort = this.sort;
-      }
+      this.dataSource.data = this.users;
+    }
+  }
+
+  ngAfterViewInit(): void {
+    this.onPageChanged.emit(this.getCurrentPageParams());
+    merge(this.sort.sortChange, this.paginator.page).subscribe(() => {
+      this.onPageChanged.emit(this.getCurrentPageParams())
+    })
+  }
+
+  getCurrentPageParams(): { sort: string, sortDirection: string, pageIndex: number, pageSize: number } {
+    return {
+      sort: this.sort.active,
+      sortDirection: this.sort.direction,
+      pageIndex: this.paginator.pageIndex,
+      pageSize: this.paginator.pageSize
     }
   }
 
