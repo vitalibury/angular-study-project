@@ -4,6 +4,7 @@ import { delay, dematerialize, map, materialize, Observable, of, throwError } fr
 import { environment } from 'src/environments/environment';
 import { INewUser } from '../auth/auth.interfaces';
 import { users } from '../auth/registered-users';
+import { constants } from '../shared/constants';
 import { IUser } from '../user/interfaces';
 
 @Injectable({
@@ -14,27 +15,29 @@ export class HttpService {
   constructor(private http: HttpClient) { }
 
   getUsers(): Observable<IUser[]> {
-    return this.http.get(`${environment.apiUrl}/?seed=foobar&results=100`).pipe(
+    return this.http.get(`${environment.apiUrl}/?seed=foobar&results=${constants.MAX_USERS_COUNT}`).pipe(
       map((response: any) => {
         // console.log(response);
-        return response.results.map((user, index: number) => {
-          return {
-            id: index,
-            firstName: user.name.first,
-            lastName: user.name.last,
-            age: user.dob.age,
-            email: user.email,
-            gender: user.gender,
-            activated: true,
-            addresses: [
-              {address: user.location.street.name, city: user.location.city, zip: user.location.postcode}
-            ],
-            company: index % 2 === 0 ? "ISSoft" : "Coherent Solutions",
-            phone: user.phone
-          }
-        });
+        return response.results.map((user: any, index: number) => this.prepareUserObj(user, index));
       })
     );
+  }
+
+  prepareUserObj(user: any, index: number) {
+    return {
+      id: index,
+      firstName: user.name.first,
+      lastName: user.name.last,
+      age: user.dob.age,
+      email: user.email,
+      gender: user.gender,
+      activated: true,
+      addresses: [
+        { address: user.location.street.name, city: user.location.city, zip: user.location.postcode }
+      ],
+      company: index % 2 === 0 ? "ISSoft" : "Coherent Solutions",
+      phone: user.phone
+    }
   }
 
   getUserById(id: number): Observable<IUser> {
@@ -49,7 +52,7 @@ export class HttpService {
   }
 
   registerUser(user: INewUser): Observable<INewUser> {
-    Object.assign(users, {[user.login]: {login: user.login, password: user.password}});
+    Object.assign(users, { [user.login]: { login: user.login, password: user.password } });
     const registeredUser = users[user.login];
     return of(registeredUser).pipe(delay(1000));
   }
@@ -60,7 +63,7 @@ export class HttpService {
       if (existingUser.password === user.password) {
         return of(existingUser).pipe(delay(1500));
       }
-      return  throwError(() => new Error('Invalid password!')).pipe(materialize(), delay(1500), dematerialize());
+      return throwError(() => new Error('Invalid password!')).pipe(materialize(), delay(1500), dematerialize());
     }
     return throwError(() => new Error('Such user does not exist! Register please!')).pipe(materialize(), delay(1500), dematerialize());
   }

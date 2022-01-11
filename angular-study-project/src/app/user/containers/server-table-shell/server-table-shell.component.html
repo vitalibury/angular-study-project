@@ -1,0 +1,6 @@
+<app-server-table
+  [users]="users$ | async"
+  (onPageChanged)="setCurrentPage($event)"
+  [usersLength]="usersLength$ | async"
+>
+</app-server-table>

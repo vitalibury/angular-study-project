@@ -1,4 +1,6 @@
 export const constants = {
   MIN_AGE_FOR_DEACTIVATION: 18,
   STUDY_PROJECT_STORAGE_VAR: 'authStorageUser',
+  SERVER_TABLE_PAGE_USERS_COUNT: 15,
+  MAX_USERS_COUNT: 100
 }
