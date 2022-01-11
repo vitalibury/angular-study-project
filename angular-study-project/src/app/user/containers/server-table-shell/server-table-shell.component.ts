@@ -30,6 +30,7 @@ export class ServerTableShellComponent implements OnInit {
   }
 
   setCurrentPage(pageParams): void {
+    console.log(pageParams)
     this.currentPageSubj.next(pageParams);
   }
 

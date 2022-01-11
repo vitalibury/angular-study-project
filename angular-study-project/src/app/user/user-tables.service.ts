@@ -42,45 +42,49 @@ export class UserTablesService {
   }
 
   sortUsers(users: IUser[], sortField: string, sortDirection: string): IUser[] {
-    if (sortField === 'name') {
-      users.sort(function (a, b) {        
-        const nameA = `${a.firstName.toLowerCase()} ${a.lastName.toLowerCase()}`;
-        const nameB = `${b.firstName.toLowerCase()} ${b.lastName.toLowerCase()}`;
-        if (nameA < nameB)
+    if (sortDirection) {
+      if (sortField === 'firstName') {
+        users.sort(function (a, b) {        
+          const nameA = `${a.firstName.toLowerCase()} ${a.lastName.toLowerCase()}`;
+          const nameB = `${b.firstName.toLowerCase()} ${b.lastName.toLowerCase()}`;
+          if (nameA < nameB)
           return -1
-        if (nameA > nameB)
+          if (nameA > nameB)
           return 1
-        return 0
-      })
-    } else if (sortField === 'email') {
-      users.sort(function (a, b) {
-        const emailA = a.email.toLowerCase();
-        const emailB = b.email.toLowerCase();
-        if (emailA < emailB)
+          return 0
+        })
+      } else if (sortField === 'email') {
+        users.sort(function (a, b) {
+          const emailA = a.email.toLowerCase();
+          const emailB = b.email.toLowerCase();
+          if (emailA < emailB)
           return -1
-        if (emailA > emailB)
+          if (emailA > emailB)
           return 1
-        return 0
-      })
-    } else if (sortField === 'company') {
-      users.sort(function (a, b) {
-        const companyA = a.company.toLowerCase();
-        const companyB = b.company.toLowerCase();
-        if (companyA < companyB)
+          return 0
+        })
+      } else if (sortField === 'company') {
+        users.sort(function (a, b) {
+          const companyA = a.company.toLowerCase();
+          const companyB = b.company.toLowerCase();
+          if (companyA < companyB)
           return -1
-        if (companyA > companyB)
+          if (companyA > companyB)
           return 1
-        return 0
-      })
-    } else if (sortField === 'age') {
-      users.sort(function (a, b) {
-        return a.age - b.age;
-      })
+          return 0
+        })
+      } else if (sortField === 'age') {
+        users.sort(function (a, b) {
+          return a.age - b.age;
+        })
+      }
+      if (sortDirection === 'desc') {
+        users.reverse();
+      }
+      return users;
+    } else {
+      return users;
     }
-    if (sortDirection === 'desc') {
-      users.reverse();
-    }
-    return users;
   }
 
 }
