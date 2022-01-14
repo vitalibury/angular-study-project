@@ -1,0 +1,6 @@
+<p>Counter = {{count$ | async}}</p>
+<button (click)="increase()">Increase</button>
+<button (click)="decrease()" [disabled]="cannotDecrease">Decrease</button>
+<button (click)="clear()" [disabled]="cannotDecrease">Clear</button>
+
+<p>Обновлялось {{updatedAt$ | async | date : 'yy/MM/dd in HH:mm:ss'}}</p>

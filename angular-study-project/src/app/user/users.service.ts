@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { delay, exhaustMap, map, Observable, of } from 'rxjs';
+import { delay, map, Observable, of } from 'rxjs';
 import { IUser } from '.';
 
 @Injectable({

@@ -7,6 +7,7 @@ import { MaterialModule } from '../material';
 
 import { HeaderComponent, MainLayoutComponent } from '.';
 import { RxJsModule } from '../rxjs/rxjs.module';
+import { CounterModule } from '../counter/counter.module';
 
 
 
@@ -20,7 +21,8 @@ import { RxJsModule } from '../rxjs/rxjs.module';
     RouterModule,
     HttpClientModule,
     MaterialModule,
-    RxJsModule
+    RxJsModule,
+    CounterModule
   ]
 })
 export class LayoutModule { }
