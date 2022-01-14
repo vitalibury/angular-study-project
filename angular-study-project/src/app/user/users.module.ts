@@ -25,6 +25,10 @@ import { UserContactDetailsShellComponent } from './containers/user-contact-deta
 import { UserDetailsShellComponent } from './containers/user-details-shell/user-details-shell.component';
 import { UserPersonalDetailsShellComponent } from './containers/user-personal-details-shell/user-personal-details-shell.component';
 import { ClientTableComponent } from './components/client-table/client-table.component';
+import { StoreModule } from '@ngrx/store';
+import { usersReducer } from './state/users.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { UsersEffects } from './state/users.effects';
 
 
 @NgModule({
@@ -53,7 +57,9 @@ import { ClientTableComponent } from './components/client-table/client-table.com
     // HttpClientModule,
     RouterModule,
     MaterialModule,
-    UserRoutingModule
+    UserRoutingModule,
+    StoreModule.forFeature('users', usersReducer),
+    EffectsModule.forFeature([UsersEffects])
   ]
 })
 export class UsersModule { }

@@ -21,9 +21,9 @@ export class UserItemComponent implements OnInit {
   }
 
   deactivate(user: IUser): void {
-    if (user.age >= constants.MIN_AGE_FOR_DEACTIVATION) {
-      user.activated = false;
-    }
+    // if (user.age >= constants.MIN_AGE_FOR_DEACTIVATION) {
+    //   user.activated = false;
+    // }
     this.deactivateUser.emit(user);
   }
 

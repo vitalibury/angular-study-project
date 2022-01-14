@@ -6,6 +6,7 @@ import { AuthGuard } from './auth/auth.guard';
 
 import { MainLayoutComponent } from './layout';
 import { RxjsComponent } from './rxjs';
+import { CounterComponent } from './counter/counter/counter.component';
 
 const routes: Routes = [
   { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },
@@ -14,7 +15,8 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: '/', pathMatch: 'full' },
       { path: '', loadChildren: () => import('./user/users.module').then(m => m.UsersModule), canLoad: [AuthGuard]},
-      { path: 'rxjs', component: RxjsComponent }
+      { path: 'rxjs', component: RxjsComponent },
+      { path: 'counter', component: CounterComponent }
     ]
   }
 ];
